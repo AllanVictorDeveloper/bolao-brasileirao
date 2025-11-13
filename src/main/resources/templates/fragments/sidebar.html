@@ -1,0 +1,63 @@
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
+<div xmlns:th="http://www.thymeleaf.org"
+     th:fragment="sidebar">
+
+    <aside id="sidebar" class="sidebar">
+
+        <ul class="menu">
+            <li>
+                <a th:href="@{/home}"
+                   th:classappend="${pagina} == 'home' ? 'active' : ''"
+                   data-title="Home">
+                    <i class="bi bi-house-door-fill"></i>
+                    <span>Inicio</span>
+                </a>
+            </li>
+            <li>
+                <a th:href="@{/classificacao}"
+                   th:classappend="${pagina} == 'classificacao' ? 'active' : ''"
+                   data-title="Classificação">
+                    <i class="bi bi-award-fill"></i>
+                    <span>Classificação</span>
+                </a>
+            </li>
+
+            <li>
+                <a th:href="@{/meus-palpites}"
+                   th:classappend="${pagina} == 'palpites' ? 'active' : ''"
+                   data-title="Meus Palpites">
+                    <i class="bi bi-lightning-fill"></i>
+                    <span>Meus Palpites</span>
+                </a>
+            </li>
+
+            <li>
+                <a th:href="@{/rodadas}"
+                   th:classappend="${pagina} == 'rodadas' ? 'active' : ''"
+                   data-title="Rodadas">
+                    <i class="bi bi-calendar-week"></i>
+                    <span>Rodadas</span>
+                </a>
+            </li>
+        </ul>
+
+        <!-- BOTÃO DE LOGOUT FIXADO -->
+        <div class="logout-area">
+            <a th:href="@{/logout}" data-title="Sair">
+                <i class="bi bi-box-arrow-right"></i>
+                <span>Sair</span>
+            </a>
+        </div>
+
+    </aside>
+
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById("sidebar");
+            sidebar.classList.toggle("collapsed");
+            document.body.classList.toggle("sidebar-collapsed");
+        }
+    </script>
+
+</div>

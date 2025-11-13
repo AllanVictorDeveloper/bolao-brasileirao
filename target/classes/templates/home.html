@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <link rel="stylesheet" th:href="@{/css/home.css}">
+</head>
+
+<body th:replace="~{layout :: template(titulo='Página Inicial', conteudo=~{home :: content})}">
+
+
+<div th:fragment="content" class="home-wrapper">
+
+  <div class="home-header">
+    <h1>Bem-vindo ao Bolão do Brasileirão!</h1>
+    <p>Gerencie seus palpites, acompanhe a classificação e dispute o topo do ranking.</p>
+  </div>
+
+  <div class="home-grid">
+
+    <!-- CARD 1 -->
+    <div class="home-card">
+      <div class="card-icon">
+        <i class="bi bi-pencil-square"></i>
+      </div>
+      <div>
+        <h2>Faça seus Palpites</h2>
+        <p>Acesse as rodadas e registre seus palpites para pontuar.</p>
+      </div>
+    </div>
+
+    <!-- CARD 2 -->
+    <div class="home-card">
+      <div class="card-icon">
+        <i class="bi bi-bar-chart-fill"></i>
+      </div>
+      <div>
+        <h2>Classificação Geral</h2>
+        <p>Veja em tempo real quem está liderando.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEÇÃO SOBRE O SISTEMA -->
+  <div class="about-system">
+    <h2>Sobre o Sistema</h2>
+    <p>
+      O Bolão do Brasileirão foi desenvolvido para tornar sua disputa ainda mais divertida.
+      Dê seus palpites em cada rodada, acompanhe o ranking em tempo real e veja quem está
+      se destacando no seu grupo. Quanto mais acertos, mais pontos — e mais perto do topo
+      você fica!
+    </p>
+
+    <p>
+      O sistema é simples, intuitivo e totalmente automatizado. Basta registrar seus palpites,
+      acompanhar os resultados atualizados automaticamente e competir com amigos,
+      familiares ou colegas de trabalho.
+    </p>
+
+    <div class="about-features">
+      <div class="feature-item">
+        <i class="bi bi-controller"></i>
+        Disputa entre amigos
+      </div>
+
+      <div class="feature-item">
+        <i class="bi bi-graph-up"></i>
+        Ranking atualizado
+      </div>
+
+      <div class="feature-item">
+        <i class="bi bi-calendar-week"></i>
+        Rodadas do Brasileirão
+      </div>
+
+      <div class="feature-item">
+        <i class="bi bi-shield-check"></i>
+        Interface segura e amigável
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+</body>
+</html>

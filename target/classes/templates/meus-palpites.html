@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <link rel="stylesheet" th:href="@{/css/classificacao.css}">
+</head>
+
+<body th:replace="layout :: layout (~{::body})"
+      th:with="titulo='Meus Palpites', conteudo='palpites_conteudo'">
+
+<div th:fragment="palpites_conteudo">
+
+    <h1>Meus Palpites</h1>
+    <p class="sub">Veja seus palpites e pontuações.</p>
+
+    <div class="palpite-list" th:each="palpite : ${palpites}">
+        <div class="palpite-card">
+
+            <div class="palpite-info">
+                <h3 th:text="${palpite.jogo.mandante + ' x ' + palpite.jogo.visitante}">
+                    Flamengo x Palmeiras
+                </h3>
+
+                <p th:text="'Data: ' + ${#temporals.format(palpite.jogo.dataJogo, 'dd/MM HH:mm')}">Data</p>
+
+                <p>
+                    Seu palpite:
+                    <span th:text="${palpite.palpiteMandante + ' x ' + palpite.palpiteVisitante}"></span>
+                </p>
+
+                <p>
+                    Placar final:
+                    <span th:text="${palpite.jogo.placarMandante + ' x ' + palpite.jogo.placarVisitante}"></span>
+                </p>
+            </div>
+
+            <div class="palpite-pontos">
+                <span th:text="${palpite.pontos}">10</span>
+                <small>Pontos</small>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <link rel="stylesheet" th:href="@{/css/classificacao.css}">
+</head>
+
+<body th:replace="layout :: layout (~{::body})"
+      th:with="titulo='Rodadas', conteudo='rodadas_conteudo'">
+
+<div th:fragment="rodadas_conteudo">
+
+  <h1>Rodada [[${rodada}]]</h1>
+  <p class="sub">Faça seus palpites para cada jogo.</p>
+
+  <div class="rodada-card" th:each="jogo : ${jogos}">
+
+    <div class="rodada-info">
+
+      <h3 th:text="${jogo.mandante + ' x ' + jogo.visitante}">
+        Corinthians x Santos
+      </h3>
+
+      <p th:text="'Data: ' + ${#temporals.format(jogo.dataJogo, 'dd/MM HH:mm')}"></p>
+    </div>
+
+    <form th:action="@{/bolao/palpite}" method="post" class="palpite-form">
+      <input type="hidden" name="jogoId" th:value="${jogo.id}">
+
+      <div class="placar-inputs">
+        <input type="number" name="mandante" placeholder="0" min="0" required>
+        <span>X</span>
+        <input type="number" name="visitante" placeholder="0" min="0" required>
+      </div>
+
+      <button type="submit" class="btn-palpite">Enviar</button>
+    </form>
+
+  </div>
+
+</div>
+
+</body>
+</html>

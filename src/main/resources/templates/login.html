@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Login - Bolão do Brasileirão</title>
+    <link rel="stylesheet" th:href="@{/css/login.css}">
+</head>
+<body>
+
+<div class="login-container">
+
+    <div class="login-card">
+
+        <h2>Bolão do Brasileirão</h2>
+        <p class="subtitle">Acesse sua conta</p>
+
+        <div th:if="${param.error}">
+            <div class="alert-error">
+                Email ou senha incorretos.
+            </div>
+        </div>
+
+<!--        <div th:if="${param.logout}">-->
+<!--            <div class="alert-success">-->
+<!--                Você saiu com sucesso.-->
+<!--            </div>-->
+<!--        </div>-->
+
+        <div th:if="${param.resetSent}">
+            <div class="alert-success">Link enviado! Verifique sua caixa de entrada.</div>
+        </div>
+
+        <form th:action="@{/login}" method="post">
+
+            <div class="input-group">
+                <label>Email</label>
+                <input placeholder="Digite seu e-mail" type="text" name="username" required>
+            </div>
+
+            <div class="input-group">
+                <label>Senha</label>
+                <input placeholder="Digite sua senha" type="password" name="password" required>
+            </div>
+
+            <div class="remember">
+                <input type="checkbox" name="remember-me">
+                Manter-me logado
+            </div>
+
+            <button type="submit" class="btn-login">Entrar</button>
+
+        </form>
+
+        <p style="margin-top: 20px;">
+            <a th:href="@{/esqueci-senha}" style="color:#94a3b8;">Esqueci minha senha</a>
+        </p>
+
+<!--        <p>-->
+<!--            <a th:href="@{/cadastro}" style="color:#94a3b8;">Criar conta</a>-->
+<!--        </p>-->
+    </div>
+
+
+</div>
+
+</body>
+</html>

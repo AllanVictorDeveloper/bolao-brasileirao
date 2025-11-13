@@ -1,0 +1,1 @@
+package com.bolao.brasileirao.entity; public enum StatusJogo { AGENDADO, FINALIZADO }

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <link rel="stylesheet" th:href="@{/css/login.css}">
+</head>
+<body>
+
+<div class="login-container">
+  <div class="login-card">
+
+    <h2>Criar Conta</h2>
+
+    <form th:action="@{/cadastro}" method="post">
+
+      <div class="input-group">
+        <label>Nome</label>
+        <input type="text" name="nome" required>
+      </div>
+
+      <div class="input-group">
+        <label>Sobrenome</label>
+        <input type="text" name="sobrenome" required>
+      </div>
+
+      <div class="input-group">
+        <label>Email</label>
+        <input type="email" name="email" required>
+      </div>
+
+      <div class="input-group">
+        <label>Senha</label>
+        <input type="password" name="password" required>
+      </div>
+
+      <button type="submit" class="btn-login">Registrar</button>
+    </form>
+
+    <p style="margin-top: 20px;">
+      <a th:href="@{/login}">Já tenho conta</a>
+    </p>
+
+  </div>
+</div>
+
+</body>
+</html>

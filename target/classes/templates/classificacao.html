@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" th:href="@{/css/classificacao.css}">
+</head>
+
+<body th:replace="~{layout :: template(titulo=${titulo}, conteudo=~{classificacao :: content})}">
+
+<div th:fragment="content" class="home-wrapper">
+
+    <div class="title-box">
+        <h1>Classificação Geral</h1>
+        <p class="sub">Veja a tabela atualizada dos participantes.</p>
+    </div>
+
+    <div class="ranking-wrapper">
+        <div class="table-scroll">
+            <table class="ge-table">
+                <thead>
+                <tr>
+                    <th>Classificação</th>
+                    <th>Participante</th>
+                    <th>Pontos</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+                <!-- MOCKADOS -->
+                <tr class="gold">
+                    <td>1</td>
+                    <td>Allan Victor</td>
+                    <td>87</td>
+                </tr>
+
+                <tr class="silver">
+                    <td>2</td>
+                    <td>Bruno Costa</td>
+                    <td>81</td>
+                </tr>
+
+                <tr class="bronze">
+                    <td>3</td>
+                    <td>Fernanda Lima</td>
+                    <td>79</td>
+                </tr>
+
+                <tr>
+                    <td>4</td>
+                    <td>Rafael Torres</td>
+                    <td>73</td>
+                </tr>
+
+                <tr>
+                    <td>5</td>
+                    <td>Camila Duarte</td>
+                    <td>69</td>
+                </tr>
+
+                <tr>
+                    <td>6</td>
+                    <td>Tiago Andrade</td>
+                    <td>63</td>
+                </tr>
+
+                <tr>
+                    <td>7</td>
+                    <td>Letícia Prado</td>
+                    <td>52</td>
+                </tr>
+
+
+                <!--        <tr th:each="usuario, iter : ${usuarios}">-->
+                <!--            <td class="pos" th:text="${iter.index + 1}">1</td>-->
+                <!--            <td class="nome" th:text="${usuario.nome}">Nome</td>-->
+                <!--            <td class="pts" th:text="${usuario.totalPontos}">80</td>-->
+                <!--        </tr>-->
+
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>
+

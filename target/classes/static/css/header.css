@@ -1,0 +1,63 @@
+/* ---------- HEADER ---------- */
+.top-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 70px;
+    background: linear-gradient(90deg, #0A0F1E, #0EA15F);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 25px;
+    color: #fff;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.35);
+    z-index: 50;
+}
+
+.logo-area {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo-area span{
+    color: #0A0F24;
+
+}
+
+.logo-area .ano{
+    color: #FFD84A;
+    font-weight: bold;
+
+}
+
+.logo-icon {
+    font-size: 26px;
+    color: #FFD84A;
+    margin-top: 2px;
+}
+
+.logo-text {
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.menu-toggle {
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.08);
+    color: white;
+    font-size: 22px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: .25s ease;
+}
+
+.menu-toggle:hover {
+    background: rgba(255,255,255,0.12);
+}

@@ -1,0 +1,42 @@
+/*RODADAS*/
+
+.rodada-card {
+    background: rgba(255,255,255,0.05);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 16px;
+    border: 1px solid rgba(255,255,255,0.08);
+}
+
+.rodada-info h3 {
+    margin: 0;
+    color: #fff;
+}
+
+.placar-inputs {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.placar-inputs input {
+    width: 55px;
+    padding: 8px;
+    text-align: center;
+    background: #0f172a;
+    color: #fff;
+    border-radius: 6px;
+    border: 1px solid #1e293b;
+}
+
+.btn-palpite {
+    margin-top: 14px;
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+    background: #22c55e;
+    color: #0F172A;
+    font-weight: bold;
+    cursor: pointer;
+    width: 100%;
+}

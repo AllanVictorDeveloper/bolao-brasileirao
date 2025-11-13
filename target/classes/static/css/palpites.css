@@ -1,0 +1,30 @@
+/*CARD PALPITES*/
+
+.palpite-card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 10px;
+    padding: 18px;
+    margin-bottom: 14px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.palpite-info h3 {
+    margin: 0;
+    color: #fff;
+}
+
+.palpite-pontos {
+    text-align: center;
+    font-size: 22px;
+    color: #22c55e;
+    font-weight: bold;
+}
+
+.palpite-pontos small {
+    display: block;
+    color: #94a3b8;
+}
+
+

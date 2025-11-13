@@ -1,0 +1,42 @@
+#server:
+#  address: 192.168.1.153
+#  port: 8080
+#  error:
+#    include-exception: true
+
+spring:
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/bolaodb_dev?allowPublicKeyRetrieval=true&useSSL=false
+    username: root
+    password: Dev@llan
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  logging:
+    level:
+      org.hibernate: DEBUG
+      org.springframework: DEBUG
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format-sql: true
+
+  mvc:
+    throw-exception-if-no-handler-found: true
+    web:
+      resources:
+        add-mappings: false
+
+api:
+  security:
+    token:
+      secret: "@DY4524U2IY4653IID35435423D3FG35"
+  jwt:
+    token:
+      expiration: 1
+    refresh-token:
+      expiration: 48
+

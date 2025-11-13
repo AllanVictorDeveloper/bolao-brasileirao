@@ -1,0 +1,156 @@
+/* ----------------------------- */
+/*   TÍTULO                      */
+/* ----------------------------- */
+
+.home-wrapper {
+    color: #fff;
+    margin-top: 40px;
+    padding-top: 10px;
+    padding-bottom: 20px;
+    width: 100%;
+    /*margin-left: auto;*/
+    /*margin-right: auto;*/
+    transition: margin .3s ease;
+}
+
+.title-box {
+    margin-top: 40px;
+    margin-bottom: 20px;
+}
+
+.title-box h1 {
+    font-size: 32px;
+    font-weight: 700;
+    color: #0A0F24;
+    margin-bottom: 6px;
+}
+
+.sub {
+    color: #10182f;
+    font-size: 17px;
+}
+
+/* ----------------------------- */
+/*   WRAPPER DA TABELA           */
+/* ----------------------------- */
+.ranking-wrapper {
+    background: #0F1528;
+    padding: 35px;
+    /*border-radius: 20px;*/
+    border: 1px solid rgba(255,255,255,0.06);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+
+    max-height: 580px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Área rolável */
+.table-scroll {
+    overflow-y: auto;
+    overflow-x: hidden;
+    flex: 1;                     /* ocupa todo o espaço abaixo do título */
+    padding-right: 6px;          /* espaço para scrollbar */
+}
+
+/* Oculta barra feia no Firefox */
+.table-scroll {
+    scrollbar-width: thin;
+    scrollbar-color: #0EA15F #10182f;
+}
+
+/* Scrollbar estilizado Chrome */
+.table-scroll::-webkit-scrollbar {
+    width: 8px;
+}
+.table-scroll::-webkit-scrollbar-track {
+    background: #10182f;
+}
+.table-scroll::-webkit-scrollbar-thumb {
+    background: #0EA15F;
+    border-radius: 6px;
+}
+
+/* ----------------------------- */
+/*   TABELA      */
+/* ----------------------------- */
+.ge-table {
+    margin-bottom: 8px;
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+.ge-table thead th {
+    padding: 12px 15px;
+    text-align: left;
+    color: #9aa7c2;
+    /*color: #FFD84A;*/
+    font-size: 15px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+
+    position: sticky;
+    top: 0;
+    background: #121b36;
+    z-index: 10;
+}
+
+/* Linha base */
+.ge-table tbody tr {
+    background: #121b36;
+    transition: .2s ease;
+    /*border-radius: 12px;*/
+    overflow: hidden;
+}
+
+/* Células */
+.ge-table td {
+    padding: 18px;
+    color: #edf2f7;
+    font-weight: 500;
+}
+
+/* Hover suave */
+.ge-table tbody tr:hover {
+    background: #1a2445;
+    transform: translateX(4px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.4);
+}
+
+/* ----------------------------- */
+/*   BARRA LATERAL COLORIDA      */
+/* ----------------------------- */
+.ge-table tbody tr td:first-child {
+    border-left: 6px solid transparent;
+    font-weight: 700;
+}
+
+/* TOP 3 – cores mais suaves, modernas */
+.gold td:first-child {
+    border-left-color: #FFD93D;
+}
+.silver td:first-child {
+    border-left-color: #C0C0C0;
+}
+.bronze td:first-child {
+    border-left-color: #CD7F32;
+}
+
+/* TOP 3 – fundo premium */
+.gold {
+    background: linear-gradient(to right, rgba(255,217,61,0.20), #121b36);
+}
+.silver {
+    background: linear-gradient(to right, rgba(192,192,192,0.18), #121b36);
+}
+.bronze {
+    background: linear-gradient(to right, rgba(205,127,50,0.18), #121b36);
+}
+
+/* Deixa o texto dos top 3 mais destacado */
+.gold td,
+.silver td,
+.bronze td {
+    font-weight: 600;
+}
