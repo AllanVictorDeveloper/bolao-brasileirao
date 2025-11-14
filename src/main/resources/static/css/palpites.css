@@ -1,30 +1,159 @@
-/*CARD PALPITES*/
+/* ===========================
+   TÍTULO
+=========================== */
 
-.palpite-card {
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 10px;
-    padding: 18px;
-    margin-bottom: 14px;
-    display: flex;
-    justify-content: space-between;
+.palpite-wrapper {
+    color: #fff;
+    margin-top: 40px;
+    padding-top: 10px;
+    padding-bottom: 20px;
+    width: 100%;
+    /*margin-left: auto;*/
+    /*margin-right: auto;*/
+    transition: margin .3s ease;
 }
 
-.palpite-info h3 {
-    margin: 0;
+.title-box {
+    margin-top: 40px;
+    margin-bottom: 20px;
+}
+
+.title-box h1 {
+    font-size: 32px;
+    font-weight: 700;
+    color: #0A0F24;
+    margin-bottom: 6px;
+}
+
+.sub {
+    color: #10182f;
+    font-size: 17px;
+}
+
+
+/* ===========================
+   CARD DO JOGO
+=========================== */
+.jogo-card {
+    background: #0F1528;
+    border: 1px solid rgba(255,255,255,0.06);
+    padding: 20px 22px;
+    border-radius: 14px;
+    margin-bottom: 20px;
+    box-shadow: 0 12px 22px rgba(0,0,0,0.35);
+}
+
+/* TOPO – Estádio + Data */
+.jogo-topo {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    color: #9ca3af;
+    margin-bottom: 14px;
+}
+
+.estadio {
+    font-weight: 600;
+}
+
+.datajogo {
+    opacity: 0.9;
+}
+
+
+/* ===========================
+   CONTEÚDO DO JOGO
+=========================== */
+.jogo-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.time {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 80px;
+}
+
+.sigla {
+    font-size: 20px;
+    font-weight: 700;
     color: #fff;
 }
 
-.palpite-pontos {
+.placares {
     text-align: center;
-    font-size: 22px;
-    color: #22c55e;
-    font-weight: bold;
 }
 
-.palpite-pontos small {
-    display: block;
-    color: #94a3b8;
+.placar-final {
+    font-size: 26px;
+    color: #fff;
+    font-weight: 700;
+}
+
+.placar-palpite {
+    margin-top: 6px;
+    font-size: 14px;
+    color: #cbd5e1;
+}
+
+.placar-palpite b {
+    color: #0EA15F;
 }
 
 
+/* ===========================
+   RODAPÉ DO CARD
+=========================== */
+.jogo-footer {
+    margin-top: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.detalhes {
+    color: #0EA15F;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.detalhes:hover {
+    color: #16c97b;
+}
+
+.pontos {
+    background: rgba(14,161,95,0.20);
+    padding: 6px 12px;
+    border-radius: 8px;
+    color: #0EA15F;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+
+/* ===========================
+   MOBILE
+=========================== */
+@media (max-width: 600px) {
+
+    .jogo-content {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .time {
+        width: auto;
+    }
+
+    .placar-final {
+        font-size: 22px;
+    }
+
+    .jogo-footer {
+        flex-direction: column;
+        gap: 10px;
+    }
+}

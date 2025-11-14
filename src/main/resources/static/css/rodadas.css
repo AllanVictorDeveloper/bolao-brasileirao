@@ -1,42 +1,288 @@
-/*RODADAS*/
-
-.rodada-card {
-    background: rgba(255,255,255,0.05);
-    border-radius: 12px;
-    padding: 20px;
-    margin-bottom: 16px;
-    border: 1px solid rgba(255,255,255,0.08);
+/* ===========================
+   WRAPPER
+=========================== */
+.rodadas-wrapper {
+    margin-top: 50px;
+    padding-bottom: 40px;
+    width: 100%;
 }
 
-.rodada-info h3 {
-    margin: 0;
+/* ===========================
+   CABEÇALHO DA RODADA (igual GE)
+=========================== */
+.rodada-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    margin-bottom: 30px;
+}
+
+.rodada-header h2 {
+    font-size: 22px;
+    color: #0A0F24;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+/* AVISO COM ANIMAÇÃO */
+.fade-in {
+    opacity: 0;
+    animation: fadeIn .8s forwards;
+}
+
+.jogo-item.encerrado {
+    background: #0C1022;
+    border: 1px solid rgba(30, 255, 150, 0.35);
+    position: relative;
+}
+
+/* ===========================
+   STATUS SELO
+=========================== */
+
+.status-selo {
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    z-index: 10;
+}
+
+/* VERDE - andamento */
+.status-selo.andamento {
+    background: #0EA15F;
+    color: #0A0F24;
+    box-shadow: 0 4px 12px rgba(14, 161, 95, 0.35);
+}
+
+/* VERMELHO - encerrado */
+.status-selo.encerrado {
+    background: #d9534f;
     color: #fff;
+    box-shadow: 0 4px 14px rgba(217, 83, 79, 0.5);
 }
 
-.placar-inputs {
+/* AMARELO - agendado */
+.status-selo.agendado {
+    background: #ffcc00;
+    color: #000;
+    box-shadow: 0 4px 14px rgba(255, 204, 0, 0.45);
+}
+
+/* ITEM AGENDADO */
+.jogo-item.agendado {
+    border: 1px solid rgba(255, 204, 0, 0.25);
+}
+
+
+
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.aviso-rodada {
+    background: #0F1528;
+    border: 1px solid rgba(255,255,255,0.10);
+    padding: 20px;
+    border-radius: 12px;
+    margin-top: 20px;
+    text-align: center;
+    color: #20d88d;
+    font-size: 18px;
+    font-weight: 700;
+    box-shadow: 0 12px 22px rgba(0,0,0,0.35);
+}
+
+/* BOTÃO DESABILITADO */
+.nav-disabled {
+    background: #B0B0B0;
+    opacity: .4;
+    cursor: not-allowed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    font-size: 18px;
+    color: white;
+}
+
+
+
+.nav-btn {
+    background: #0EA15F;
+    border: none;
+    color: #fff;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    font-size: 18px;
+    cursor: pointer;
+    transition: .2s;
+}
+.btn-link {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: #0EA15F;
+    color: #fff;
+    font-size: 18px;
+    text-decoration: none;
+}
+
+
+.nav-btn:hover {
+    background: #13c97a;
+}
+
+/* ===========================
+   ITEM DO JOGO (igual GE)
+=========================== */
+.jogo-item {
+    background: #0F1528;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.06);
+    padding: 18px;
+    margin-bottom: 22px;
+    box-shadow: 0 12px 22px rgba(0,0,0,0.35);
+
+    position: relative;
+    overflow: visible;
+}
+
+/* topo */
+.jogo-info-topo {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    color: #9aa3b1;
+    margin-bottom: 16px;
+}
+
+.estadio {
+    font-weight: 600;
+}
+
+/* ===========================
+   CONTEÚDO DO JOGO
+=========================== */
+.jogo-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.time {
+    text-align: center;
+    width: 70px;
+}
+
+.sigla {
+    color: #fff;
+    font-size: 15px;
+    font-weight: 700;
+    /*white-space: nowrap;*/
+    text-align: center;
+    max-width: 100px;
+}
+
+.nome-time {
+    color: #fff;
+    font-size: 20px;
+    font-weight: 700;
+    display: block;
+
+    /* Mantém layout bonito mesmo com nomes gigantes */
+    max-width: 100px;        /* limite horizontal */
+    white-space: nowrap;     /* não quebra linha */
+    overflow: hidden;        /* esconde excesso */
+    text-overflow: ellipsis; /* adiciona "..." */
+    text-align: center;      /* centraliza */
+}
+
+/* ===========================
+   PLACAR / INPUTS
+=========================== */
+.placar-area {
+    text-align: center;
+}
+
+.placar {
+    font-size: 26px;
+    color: #fff;
+    font-weight: 700;
+    display: block;
+    margin-bottom: 6px;
+}
+
+/* detalhes */
+.link-detalhes {
+    color: #20d88d;
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    text-decoration: none;
+}
+
+.link-detalhes:hover {
+    color: #33ffaf;
+}
+
+/* INPUTS */
+.inputs {
     display: flex;
     align-items: center;
     gap: 10px;
 }
 
-.placar-inputs input {
+.inputs input {
     width: 55px;
-    padding: 8px;
-    text-align: center;
-    background: #0f172a;
-    color: #fff;
-    border-radius: 6px;
+    padding: 10px;
+    background: #10182f;
     border: 1px solid #1e293b;
+    color: #fff;
+    font-size: 18px;
+    border-radius: 8px;
+    text-align: center;
 }
 
+.inputs input:focus {
+    border-color: #0EA15F;
+}
+
+.x {
+    color: #9aa3b1;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+/* botão */
 .btn-palpite {
-    margin-top: 14px;
+    margin-top: 10px;
     padding: 10px;
-    border-radius: 8px;
-    border: none;
-    background: #22c55e;
-    color: #0F172A;
-    font-weight: bold;
-    cursor: pointer;
     width: 100%;
+    background: #0EA15F;
+    border: none;
+    border-radius: 8px;
+    font-weight: 700;
+    color: #0A0F24;
+    cursor: pointer;
+}
+
+.btn-palpite:hover {
+    background: #12c97c;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.4);
 }

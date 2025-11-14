@@ -6,7 +6,15 @@ import org.springframework.data.jpa.repository.*;
 import java.util.*;
 
 public interface JogoRepository extends JpaRepository<Jogo, Long> {
-    List<Jogo> findByRodada(Integer r);
+    List<Jogo> findByRodada(Integer rodada);
 
-    boolean existsByApiId(Long id);
+    boolean existsById(Long id);
+
+    List<Jogo> findByRodadaOrderByDataJogoAsc(Integer rodada);
+
+    @Query("SELECT MAX(j.rodada) FROM Jogo j")
+    Integer findRodadaMaisAtual();
+
+    boolean existsByRodada(Integer rodada);
+
 }

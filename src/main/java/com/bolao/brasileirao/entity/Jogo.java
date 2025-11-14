@@ -14,21 +14,30 @@ import java.time.LocalDateTime;
 @Table(name = "Jogos")
 public class Jogo extends BaseEntity {
 
- private Long apiId;
+ @Column(name = "partida_id", unique = true)
+ private Long partidaId;
 
  private Integer rodada;
 
+ // Mandante
  private String mandante;
+ private String mandanteSigla;
+ private String mandanteEscudo;
 
+ // Visitante
  private String visitante;
-
- private Integer placarMandante;
-
- private Integer placarVisitante;
+ private String visitanteSigla;
+ private String visitanteEscudo;
 
  private LocalDateTime dataJogo;
 
+ private Integer placarMandante;
+ private Integer placarVisitante;
+
+ private String estadio;
+
+ private String slug;
+
  @Enumerated(EnumType.STRING)
  private StatusJogo status;
-
 }

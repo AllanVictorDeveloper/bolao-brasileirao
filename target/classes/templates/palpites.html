@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <link rel="stylesheet" th:href="@{/css/palpites.css}">
+</head>
+
+
+<body th:replace="~{layout :: template(titulo=${titulo}, conteudo=~{palpites :: content})}">
+
+<div th:fragment="content" class="palpite-wrapper">
+
+    <div class="title-box">
+        <h1>Meus Palpites</h1>
+        <p class="sub">Acompanhe seus palpites e o resultado das partidas.</p>
+    </div>
+
+
+    <!-- LOOP PALPITES -->
+    <div class="jogo-card">
+
+        <div class="jogo-topo">
+            <span class="estadio">Maracanã</span>
+            <span class="datajogo">12/07 • Sábado • 16:30</span>
+        </div>
+
+        <div class="jogo-content">
+            <div class="time">
+                <span class="sigla">FLA</span>
+            </div>
+
+            <div class="placares">
+                <span class="placar-final">2 x 0</span>
+                <span class="placar-palpite">Seu palpite: <b>2 x 1</b></span>
+            </div>
+
+            <div class="time">
+                <span class="sigla">SAO</span>
+            </div>
+        </div>
+
+        <div class="jogo-footer">
+            <a class="detalhes">Saiba como foi</a>
+            <div class="pontos"><span>10</span> pts</div>
+        </div>
+
+    </div>
+
+</div>
+
+
+</body>
+</html>

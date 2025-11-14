@@ -18,7 +18,7 @@ public class BolaoController {
  @Autowired private PalpiteRepository palpiteRepo;
 
  @GetMapping("/rodada/{rodada}")
- public String rodada(@PathVariable int rodada, Model model){
+ public String rodada(@PathVariable Integer rodada, Model model){
     model.addAttribute("jogos", jogoRepo.findByRodada(rodada));
     return "rodadas";
  }

@@ -30,7 +30,14 @@ spring:
       resources:
         add-mappings: false
 
+
+
+
 api:
+  football:
+    key: "live_3c39b2910bbe55aa3153a5a2775bdb"
+    base-url: "https://api.api-futebol.com.br/v1"
+
   security:
     token:
       secret: "@DY4524U2IY4653IID35435423D3FG35"

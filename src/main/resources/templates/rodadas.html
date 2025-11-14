@@ -2,41 +2,88 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-  <link rel="stylesheet" th:href="@{/css/classificacao.css}">
+    <link rel="stylesheet" th:href="@{/css/rodadas.css}">
 </head>
 
-<body th:replace="layout :: layout (~{::body})"
-      th:with="titulo='Rodadas', conteudo='rodadas_conteudo'">
+<body th:replace="~{layout :: template(titulo=${titulo}, conteudo=~{rodadas :: content})}">
 
-<div th:fragment="rodadas_conteudo">
+<div th:fragment="content" class="rodadas-wrapper">
 
-  <h1>Rodada [[${rodada}]]</h1>
-  <p class="sub">Faça seus palpites para cada jogo.</p>
+    <div class="rodada-header">
 
-  <div class="rodada-card" th:each="jogo : ${jogos}">
+        <!-- Botão Anterior -->
+        <a th:if="${hasAnterior}"
+           th:href="@{/rodadas(rodada=${rodada - 1})}"
+           class="nav-btn btn-link">&lt;</a>
 
-    <div class="rodada-info">
+        <span th:if="${!hasAnterior}" class="nav-btn nav-disabled">&lt;</span>
 
-      <h3 th:text="${jogo.mandante + ' x ' + jogo.visitante}">
-        Corinthians x Santos
-      </h3>
+        <!-- Título -->
+        <h2 th:text="${rodada} + 'ª RODADA'"></h2>
 
-      <p th:text="'Data: ' + ${#temporals.format(jogo.dataJogo, 'dd/MM HH:mm')}"></p>
+        <!-- Botão Próxima -->
+        <a th:if="${hasProxima}"
+           th:href="@{/rodadas(rodada=${rodada + 1})}"
+           class="nav-btn btn-link">&gt;</a>
+
+        <span th:if="${!hasProxima}" class="nav-btn nav-disabled">&gt;</span>
+
     </div>
 
-    <form th:action="@{/bolao/palpite}" method="post" class="palpite-form">
-      <input type="hidden" name="jogoId" th:value="${jogo.id}">
 
-      <div class="placar-inputs">
-        <input type="number" name="mandante" placeholder="0" min="0" required>
-        <span>X</span>
-        <input type="number" name="visitante" placeholder="0" min="0" required>
-      </div>
+    <div class="aviso-rodada fade-in" th:if="${semJogos}">
+        <p>Rodada ainda não está disponível.</p>
+    </div>
 
-      <button type="submit" class="btn-palpite">Enviar</button>
-    </form>
 
-  </div>
+    <!-- LOOP JOGOS -->
+    <div class="jogo-item"
+         th:each="jogo : ${jogos}"
+         th:classappend="${jogo.status.name() == 'FINALIZADO' ? ' encerrado' :
+                      (jogo.status.name() == 'AGENDADO' ? ' agendado' : ' andamento')}">
+
+        <!-- TOPO -->
+        <div class="jogo-info-topo">
+            <span class="estadio" th:text="${jogo.estadio}">Estádio</span>
+            <span class="data" th:text="${#temporals.format(jogo.dataJogo, 'dd/MM • EEEE • HH:mm')}"></span>
+        </div>
+
+        <!-- SELO DE STATUS -->
+        <div class="status-selo"
+             th:classappend="${jogo.status.name() == 'FINALIZADO' ? ' encerrado' :
+                          (jogo.status.name() == 'AGENDADO' ? ' agendado' : ' andamento')}">
+
+        <span th:text="${jogo.status.name() == 'FINALIZADO' ? 'ENCERRADO' :
+                       (jogo.status.name() == 'AGENDADO' ? 'AGENDADO' : 'EM ANDAMENTO')}">
+        </span>
+
+        </div>
+
+        <!-- CONTEÚDO -->
+        <div class="jogo-content">
+
+            <div class="time">
+                <span class="sigla" th:text="${jogo.mandante}">Time A</span>
+            </div>
+
+            <div class="placar-area">
+
+            <span class="placar" th:if="${jogo.placarMandante != null}"
+                  th:text="${jogo.placarMandante + ' x ' + jogo.placarVisitante}">
+            </span>
+
+                <span class="placar" th:if="${jogo.placarMandante == null}">
+                - x -
+            </span>
+
+            </div>
+
+            <div class="time">
+                <span class="sigla" th:text="${jogo.visitante}">Time B</span>
+            </div>
+
+        </div>
+    </div>
 
 </div>
 
