@@ -23,11 +23,13 @@ public class RodadaMapper {
         if (p.getTime_mandante() != null) {
             jogo.setMandante(p.getTime_mandante().getNome_popular());
             jogo.setMandanteSigla(p.getTime_mandante().getSigla());
+            jogo.setMandanteEscudo(p.getTime_mandante().getEscudo());
         }
 
         if (p.getTime_visitante() != null) {
             jogo.setVisitante(p.getTime_visitante().getNome_popular());
             jogo.setVisitanteSigla(p.getTime_visitante().getSigla());
+            jogo.setVisitanteEscudo(p.getTime_visitante().getEscudo());
         }
 
         if (p.getEstadio() != null) {
