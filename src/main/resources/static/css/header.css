@@ -1,4 +1,6 @@
-/* ---------- HEADER ---------- */
+/* -------------------------
+      HEADER DESKTOP
+------------------------- */
 .top-header {
     position: fixed;
     top: 0;
@@ -21,15 +23,10 @@
     gap: 10px;
 }
 
-.logo-area span{
-    color: #0A0F24;
-
-}
-
-.logo-area .ano{
-    color: #FFD84A;
-    font-weight: bold;
-
+.logo-text {
+    font-size: 22px;
+    font-weight: 700;
+    color: #0A0F1E;
 }
 
 .logo-icon {
@@ -38,9 +35,9 @@
     margin-top: 2px;
 }
 
-.logo-text {
-    font-size: 22px;
-    font-weight: 700;
+.logo-area .ano {
+    color: #FFD84A;
+    font-weight: bold;
 }
 
 .menu-toggle {
@@ -58,6 +55,58 @@
     transition: .25s ease;
 }
 
-.menu-toggle:hover {
-    background: rgba(255,255,255,0.12);
+/* -------------------------
+      HEADER MOBILE
+------------------------- */
+@media (max-width: 650px) {
+
+    .top-header {
+        padding: 0 10px;
+        justify-content: flex-start;   /* deixa os itens alinhados à esquerda */
+        gap: 12px;                     /* espaço entre botão e logo */
+    }
+
+    .menu-toggle {
+        width: 34px;
+        height: 34px;
+        font-size: 18px;
+        border-radius: 8px;
+        flex-shrink: 0; /* impede o botão de diminuir */
+    }
+
+    /* área da logo vira centralizável */
+    .logo-area {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        flex: 1;                /* ocupa todo espaço possível */
+        justify-content: center; /* centraliza logo e texto */
+        min-width: 0;            /* para evitar overflow */
+    }
+
+    .logo-text {
+        font-size: 16px;
+        font-weight: 600;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: block;
+        max-width: 70%;   /* evita quebrar e colar no botão */
+    }
+
+    .logo-icon {
+        font-size: 20px;
+        flex-shrink: 0; /* impede o ícone de encolher */
+    }
+}
+
+@media (max-width: 450px) {
+    .logo-text {
+        font-size: 14px;
+        max-width: 60%;
+    }
+
+    .logo-icon {
+        font-size: 18px;
+    }
 }

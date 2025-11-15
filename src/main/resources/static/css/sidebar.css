@@ -1,5 +1,5 @@
 /* ============================= */
-/* ⚽ SIDEBAR - TEMA BRASILEIRÃO */
+/* ⚽ SIDEBAR BRASILEIRÃO */
 /* ============================= */
 
 .sidebar {
@@ -11,163 +11,36 @@
     background: #0A0F1E;
     border-right: 1px solid rgba(255,255,255,0.05);
     padding: 20px 0;
-    transition: width 0.3s ease;
+    transition: 0.3s ease;
     overflow: hidden;
-    z-index: 40;
+    z-index: 1000;
     box-shadow: 4px 0 14px rgba(0,0,0,0.25);
 
-    /* AJUSTE ESSENCIAL */
     display: flex;
     flex-direction: column;
 }
 
+/* ============= DESKTOP ============= */
 .sidebar.collapsed {
     width: 70px;
 }
 
-/* MENU */
-.menu {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.menu li {
-    margin-bottom: 12px;
-}
-
-.menu li a {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    padding: 14px 18px;
-    font-size: 16px;
-    font-weight: 500;
-    color: #d7e2e9;
-    text-decoration: none;
-    /*border-radius: 10px;*/
-    transition: 0.25s ease;
-    position: relative;
-    white-space: nowrap;
-}
-
-/* ÍCONES */
-.menu li a i {
-    font-size: 20px;
-    min-width: 28px;
-    text-align: center;
-    color: #FFD84A;
-}
-
-/* HOVER */
-.menu li a:hover {
-    background: rgba(14, 167, 98, 0.25);
-    color: #fff;
-    transform: translateX(4px);
-}
-
-.menu li a:hover i {
-    color: #15a76a;
-}
-
-/* ITEM ATIVO */
-.menu li a.active {
-    background: rgba(14, 167, 98, 0.25);
-    color: #ffffff;
-    font-weight: 600;
-    box-shadow: 0 4px 14px rgba(0,0,0,0.4);
-}
-
-.menu li a.active i {
-    color: #0EA15F;
-}
-
-/* COLAPSADO */
-.sidebar.collapsed .menu li a span {
-    display: none;
-}
-
-.sidebar.collapsed .menu li a {
-    justify-content: center;
-}
-
-/* Tooltip no modo colapsado */
-.sidebar.collapsed .menu li a:hover::after {
-    content: attr(data-title);
-    position: absolute;
-    left: 70px;
-    top: 50%;
-    transform: translateY(-50%);
-    background: #0EA15F;
-    color: #0A0F1E;
-    padding: 8px 14px;
-    border-radius: 8px;
-    font-size: 14px;
-    white-space: nowrap;
-    box-shadow: 0 4px 14px rgba(0,0,0,0.35);
-}
-
-.sidebar.collapsed .menu li a:hover::before {
-    content: "";
-    position: absolute;
-    left: 62px;
-    top: 50%;
-    transform: translateY(-50%);
-    border: 6px solid transparent;
-    border-right-color: #0EA15F;
-}
-
-/* ============================= */
-/*  BOTÃO DE LOGOUT — FIXADO     */
-/* ============================= */
-
-.logout-area {
-    margin-top: 75%;
-    padding: 0 12px 20px;
-}
-
-.logout-area a {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    padding: 14px;
-    color: #e8edf2;
-    font-size: 16px;
-    text-decoration: none;
-    /*border-radius: 10px;*/
-    transition: 0.25s ease;
-    background: rgba(255,255,255,0.04);
-}
-
-.logout-area a i {
-    font-size: 20px;
-    color: #FFD84A;
-}
-
-.logout-area a:hover {
-    background: rgba(255,255,255,0.1);
-    transform: translateX(4px);
-    color: #ffffff;
-}
-
-.logout-area a:hover i {
-    color: #15a76a;
-}
-
-/* Modo colapsado */
+.sidebar.collapsed .menu li a span,
 .sidebar.collapsed .logout-area a span {
     display: none;
 }
 
+.sidebar.collapsed .menu li a,
 .sidebar.collapsed .logout-area a {
     justify-content: center;
 }
 
-/* Tooltip do logout */
+/* ============= TOOLTIP ============= */
+.sidebar.collapsed .menu li a:hover::after,
 .sidebar.collapsed .logout-area a:hover::after {
     content: attr(data-title);
     position: absolute;
-    left: 70px;
+    left: 72px;
     top: 50%;
     transform: translateY(-50%);
     background: #0EA15F;
@@ -179,6 +52,7 @@
     box-shadow: 0 4px 14px rgba(0,0,0,0.35);
 }
 
+.sidebar.collapsed .menu li a:hover::before,
 .sidebar.collapsed .logout-area a:hover::before {
     content: "";
     position: absolute;
@@ -190,30 +64,113 @@
 }
 
 /* ============================= */
-/* CONTEÚDO PRINCIPAL             */
+/* MENU */
 /* ============================= */
 
-.content {
-    margin-left: 250px;
-    padding: 20px 30px;
-    transition: margin-left .3s ease;
+.menu { list-style: none; margin: 0; padding: 0; }
+.menu li { margin-bottom: 12px; }
+
+.menu li a {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 18px;
+    font-size: 16px;
+    font-weight: 500;
+    color: #d7e2e9;
+    text-decoration: none;
+    transition: .25s ease;
+    position: relative;
+    white-space: nowrap;
 }
 
-.sidebar.collapsed ~ .content {
-    margin-left: 70px !important;
+.menu li a i {
+    font-size: 20px;
+    min-width: 28px;
+    color: #FFD84A;
 }
 
-/* RESPONSIVO */
+.menu li a:hover {
+    background: rgba(14, 167, 98, 0.25);
+    transform: translateX(4px);
+    color: white;
+}
+
+.menu li a.active {
+    background: rgba(14, 167, 98, 0.25);
+    color: #fff;
+    font-weight: 600;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.4);
+}
+
+/* ============================= */
+/* LOGOUT FIXO */
+/* ============================= */
+
+.logout-area {
+    margin-top: auto;
+    padding: 0 12px 20px;
+}
+
+.logout-area a {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px;
+    background: rgba(255,255,255,0.04);
+    text-decoration: none;
+    color: #e8edf2;
+    transition: .25s ease;
+}
+
+.logout-area a:hover {
+    background: rgba(255,255,255,0.1);
+    transform: translateX(4px);
+}
+
+/* ============================= */
+/* 📱 MOBILE MODE — MENU OFF-CANVAS */
+/* ============================= */
+
 @media (max-width: 900px) {
+
     .sidebar {
-        width: 220px;
+        width: 240px;
+        left: -260px;
+        top: 70px;
+        height: calc(100vh - 70px);
+        border-right: 1px solid rgba(255,255,255,0.05);
+        transition: left .3s ease;
     }
 
+    /* Sidebar aberta */
+    .sidebar.open {
+        left: 0;
+    }
+
+    /* Conteúdo ocupa tela toda */
     .content {
-        margin-left: 220px;
+        margin-left: 0 !important;
     }
 
-    .sidebar.collapsed {
-        width: 70px;
+    /* Sumir tooltip no mobile */
+    .sidebar.collapsed .menu li a:hover::after,
+    .sidebar.collapsed .logout-area a:hover::after {
+        display: none;
     }
+}
+
+/* ============================= */
+/* OVERLAY ESCURO PARA MOBILE */
+/* ============================= */
+
+.sidebar-overlay::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.45);
+    z-index: 900;
 }

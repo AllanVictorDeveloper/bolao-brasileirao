@@ -1,6 +1,5 @@
 package com.bolao.brasileirao.services;
 
-import com.bolao.brasileirao.dtos.FixtureResponse;
 import com.bolao.brasileirao.dtos.RodadaResponse;
 import com.bolao.brasileirao.entity.Jogo;
 import com.bolao.brasileirao.repository.JogoRepository;
@@ -9,8 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service

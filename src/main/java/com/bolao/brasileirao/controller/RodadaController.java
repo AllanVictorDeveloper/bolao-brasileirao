@@ -1,5 +1,6 @@
 package com.bolao.brasileirao.controller;
 
+import com.bolao.brasileirao.dtos.JogoView;
 import com.bolao.brasileirao.entity.Jogo;
 import com.bolao.brasileirao.repository.JogoRepository;
 import com.bolao.brasileirao.services.RodadaService;
@@ -31,28 +32,42 @@ public class RodadaController {
             Model model) {
 
         int rodadaAtual = rodadaService.obterRodadaAtual();
-
         int rodada = (rodadaParam != null) ? rodadaParam : rodadaAtual;
 
         List<Jogo> jogos = jogoRepository.findByRodadaOrderByDataJogoAsc(rodada);
 
-        // Verifica se existe rodada anterior no banco
-        boolean hasAnterior = jogoRepository.existsByRodada(rodada - 1);
+        // Converte para view
+        List<JogoView> jogosView = jogos.stream()
+                .map(JogoView::new)
+                .toList();
 
-        // Verifica se existe rodada seguinte no banco
-        boolean hasProxima = jogoRepository.existsByRodada(rodada + 1);
+        // --------------------------
+        // REGRA GLOBAL DA RODADA
+        // --------------------------
+        boolean podeCriarRodada = false;
 
-        model.addAttribute("jogos", jogos);
+        if (!jogosView.isEmpty()) {
+
+            JogoView primeiro = jogosView.get(0);
+
+            // Se o primeiro jogo pode criar → todos podem criar
+            podeCriarRodada = primeiro.isPodeCriarPalpite();
+
+            // Propaga
+            for (JogoView j : jogosView) {
+                j.setPodeCriarPalpite(podeCriarRodada);
+            }
+        }
+
+        model.addAttribute("jogos", jogosView);
         model.addAttribute("rodada", rodada);
         model.addAttribute("semJogos", jogos.isEmpty());
-        model.addAttribute("hasAnterior", hasAnterior);
-        model.addAttribute("hasProxima", hasProxima);
+        model.addAttribute("hasAnterior", jogoRepository.existsByRodada(rodada - 1));
+        model.addAttribute("hasProxima", jogoRepository.existsByRodada(rodada + 1));
         model.addAttribute("pagina", "rodadas");
 
         return "rodadas";
     }
-
-
 
 
 }

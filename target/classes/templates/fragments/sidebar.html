@@ -23,21 +23,21 @@
                 </a>
             </li>
 
-            <li>
-                <a th:href="@{/meus-palpites}"
-                   th:classappend="${pagina} == 'palpites' ? 'active' : ''"
-                   data-title="Meus Palpites">
-                    <i class="bi bi-lightning-fill"></i>
-                    <span>Meus Palpites</span>
-                </a>
-            </li>
+<!--            <li>-->
+<!--                <a th:href="@{/meus-palpites}"-->
+<!--                   th:classappend="${pagina} == 'palpites' ? 'active' : ''"-->
+<!--                   data-title="Meus Palpites">-->
+<!--                    <i class="bi bi-lightning-fill"></i>-->
+<!--                    <span>Meus Palpites</span>-->
+<!--                </a>-->
+<!--            </li>-->
 
             <li>
                 <a th:href="@{/rodadas}"
                    th:classappend="${pagina} == 'rodadas' ? 'active' : ''"
                    data-title="Rodadas">
-                    <i class="bi bi-calendar-week"></i>
-                    <span>Rodadas</span>
+                    <i class="bi bi-lightning-fill"></i>
+                    <span>Meus Palpites</span>
                 </a>
             </li>
         </ul>
@@ -55,9 +55,23 @@
     <script>
         function toggleSidebar() {
             const sidebar = document.getElementById("sidebar");
+            const content = document.querySelector(".content");
+
+            // MOBILE: menu sobreposto
+            if (window.innerWidth <= 900) {
+                sidebar.classList.toggle("open");
+                document.body.classList.toggle("sidebar-overlay");
+                return;
+            }
+
+            // DESKTOP: apenas colapsa
             sidebar.classList.toggle("collapsed");
-            document.body.classList.toggle("sidebar-collapsed");
+
+            if (content) {
+                content.classList.toggle("content-collapsed");
+            }
         }
     </script>
+
 
 </div>

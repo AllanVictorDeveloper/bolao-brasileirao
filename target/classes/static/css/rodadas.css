@@ -7,6 +7,24 @@
     padding-bottom: 40px;
 }
 
+
+.title-box {
+    margin-top: 25px;
+    margin-bottom: 35px;
+}
+
+.title-box h1 {
+    font-size: 32px;
+    font-weight: 700;
+    color: #0A0F24;
+    margin-bottom: 6px;
+}
+
+.sub {
+    color: #10182f;
+    font-size: 17px;
+}
+
 /* ===========================
    CABEÇALHO (GE STYLE)
 =========================== */
@@ -16,7 +34,7 @@
     align-items: center;
     gap: 18px;
     margin-bottom: 28px;
-    margin-top: 100px;
+    margin-top: 45px;
 }
 
 .rodada-header h2 {
@@ -93,6 +111,44 @@
     color: #fff;
     box-shadow: 0 2px 6px rgba(14, 161, 95, 0.4);
 }
+
+/* BOTÕES (lado direito do card) */
+.card-actions {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    display: flex;
+    gap: 8px;
+}
+
+.btn-acao {
+    padding: 6px 12px;
+    font-size: 12px;
+    font-weight: 700;
+    border-radius: 6px;
+    cursor: pointer;
+    border: none;
+    transition: .15s;
+}
+
+.btn-acao.criar {
+    background: #0A0F24;
+    color: #ffffff;
+}
+
+.btn-acao.criar:hover {
+    background: #1B324E;
+}
+
+.btn-acao.ver {
+    background: #0EA15F;
+    color: #111;
+}
+
+.btn-acao.ver:hover {
+    background: #12c97c;
+}
+
 
 
 /* ===========================
@@ -175,3 +231,129 @@
 .andamento {}
 .agendado {}
 
+/* ===========================
+   RESPONSIVIDADE GERAL
+=========================== */
+
+/* 🔹 Smartphones até 600px */
+@media (max-width: 600px) {
+
+    .title-box h1 {
+        font-size: 26px;
+        text-align: center;
+    }
+
+    .sub {
+        font-size: 15px;
+        text-align: center;
+    }
+
+    .rodada-header {
+        margin-top: 25px;
+        gap: 14px;
+    }
+
+    .rodada-header h2 {
+        font-size: 18px;
+    }
+
+    /* Card mais compacto */
+    .jogo-item {
+        padding: 18px 14px;
+        border-radius: 10px;
+    }
+
+    /* Selo */
+    .status-selo {
+        font-size: 10px;
+        padding: 3px 8px;
+        top: 8px;
+        left: 8px;
+    }
+
+    /* Botões do card */
+    .card-actions {
+        top: 8px;
+        right: 8px;
+        gap: 6px;
+    }
+
+    .btn-acao {
+        padding: 5px 8px;
+        font-size: 11px;
+        border-radius: 5px;
+    }
+
+    /* Escudos menores */
+    .escudo {
+        width: 32px;
+    }
+
+    .sigla {
+        font-size: 14px;
+    }
+
+    /* Layout vertical no mobile */
+    .jogo-content {
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 10px;
+    }
+
+    .time {
+        width: auto;
+    }
+
+    /* Placar menor */
+    .placar {
+        font-size: 24px;
+    }
+
+    .jogo-info-topo {
+        font-size: 11px;
+        margin-bottom: 8px;
+    }
+
+    .jogo-info-bottom .data {
+        font-size: 11px;
+    }
+}
+
+/* 🔹 Tablets (600px a 900px) */
+@media (min-width: 600px) and (max-width: 900px) {
+
+    .title-box h1 {
+        font-size: 30px;
+        text-align: center;
+    }
+
+    .rodada-header {
+        margin-top: 40px;
+    }
+
+    .jogo-item {
+        padding: 20px 18px;
+    }
+
+    .card-actions .btn-acao {
+        font-size: 12px;
+        padding: 6px 10px;
+    }
+
+    .escudo {
+        width: 38px;
+    }
+
+    .placar {
+        font-size: 26px;
+    }
+}
+
+/* 🔹 Telas grandes + ultrawide */
+@media (min-width: 1400px) {
+    .rodadas-wrapper {
+        max-width: 1100px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}

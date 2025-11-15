@@ -1,39 +1,105 @@
+/* -------------------------
+      BASE GERAL
+------------------------- */
 body {
     margin: 0;
-    /*background: #070716;*/
     color: #ffffff;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: #ffffff;
 }
 
+/* Quando a sidebar está recolhida (DESKTOP) */
+.content.content-collapsed {
+    margin-left: 70px !important;
+}
 
-/* ---------- CONTENT AREA ---------- */
-
+/* -------------------------
+      ÁREA DE CONTEÚDO
+------------------------- */
 .content {
     padding: 100px 40px 40px 40px;
     margin-left: 250px;
-    color: white;
-    transition: margin-left .3s ease;
+    transition: margin-left .3s ease, padding .3s ease;
+    min-height: 100vh;
+    box-sizing: border-box;
 }
 
-.content.sidebar-closed {
-    margin-left: 0; /* Sidebar fechada */
+/* -------------------------
+      RESPONSIVIDADE
+------------------------- */
+
+/* 🔹 Tablets & laptops menores */
+@media (max-width: 1100px) {
+    .content {
+        padding: 90px 30px 30px 30px;
+    }
 }
 
-@media (min-width: 900px) {
+/* 🔹 MOBILE / TABLETS PEQUENOS */
+@media (max-width: 900px) {
+
+    /* Sidebar vira sobreposta */
     .sidebar {
+        position: fixed;
+        left: -260px;
+        top: 0;
+        width: 250px;
+        height: 100%;
+        transition: left .3s ease;
+        z-index: 999;
+    }
+
+    /* Sidebar aberta no mobile */
+    .sidebar.open {
         left: 0;
     }
 
+    /* Conteúdo ocupa 100% da tela sempre no mobile */
     .content {
-        margin-left: 250px;
+        margin-left: 0 !important;
+        padding: 90px 20px 30px 20px;
     }
 
+    /* Mesmo se o JS aplicar collapsed, ignora no mobile */
+    .content.content-collapsed {
+        margin-left: 0 !important;
+    }
+
+    /* Botão hamburguer */
     .menu-toggle {
-        display: none;
+        display: flex !important;
+        position: fixed;
+        left: 16px;
+        top: 18px;
+        z-index: 1001;
+        cursor: pointer;
+        width: 38px;
+        height: 38px;
+        background: #0EA15F;
+        border-radius: 50%;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .menu-toggle i {
+        font-size: 20px;
+        color: white;
     }
 }
 
+/* 🔹 CELULARES PEQUENOS (até 480px) */
+@media (max-width: 480px) {
 
+    .content {
+        padding: 80px 12px 20px 12px;
+    }
 
+    .menu-toggle {
+        width: 34px;
+        height: 34px;
+    }
 
-
+    .menu-toggle i {
+        font-size: 18px;
+    }
+}
