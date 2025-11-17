@@ -54,9 +54,11 @@
 
             <!-- Criar Palpite -->
             <button class="btn-acao criar"
-                    th:if="${jogo.podeCriarPalpite}">
+                    th:if="${jogo.podeCriarPalpite}"
+                    th:onclick="'abrirModal(' + ${jogo.jogo.id} + ')'">
                 Criar Palpite
             </button>
+
 
             <!-- Ver Palpite -->
             <button class="btn-acao ver"

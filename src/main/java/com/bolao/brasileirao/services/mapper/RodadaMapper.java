@@ -17,16 +17,20 @@ public class RodadaMapper {
     public Jogo converterParaJogo(RodadaResponse.Partida p, Integer rodada) {
 
         Jogo jogo = new Jogo();
-        jogo.setRodada(rodada);
 
+        jogo.setRodada(rodada);
+        jogo.setSlug(p.getSlug());
+        jogo.setPartidaId(p.getPartida_id());
 
         if (p.getTime_mandante() != null) {
+            jogo.setMandanteId(p.getTime_mandante().getTime_id());
             jogo.setMandante(p.getTime_mandante().getNome_popular());
             jogo.setMandanteSigla(p.getTime_mandante().getSigla());
             jogo.setMandanteEscudo(p.getTime_mandante().getEscudo());
         }
 
         if (p.getTime_visitante() != null) {
+            jogo.setVisitanteId(p.getTime_visitante().getTime_id());
             jogo.setVisitante(p.getTime_visitante().getNome_popular());
             jogo.setVisitanteSigla(p.getTime_visitante().getSigla());
             jogo.setVisitanteEscudo(p.getTime_visitante().getEscudo());

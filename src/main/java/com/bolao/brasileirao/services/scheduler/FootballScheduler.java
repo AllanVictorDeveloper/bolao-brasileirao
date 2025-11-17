@@ -14,7 +14,7 @@ public class FootballScheduler {
     }
 
 //    @Scheduled(cron = "0 0 3 * * *", zone = "America/Sao_Paulo")
-//    @Scheduled(fixedRate = 10000)
+//    @Scheduled(fixedRate = 5000)
     public void importarJogosDiariamente() {
 
         System.out.println("⏳ Importando jogos do Brasileirão...");

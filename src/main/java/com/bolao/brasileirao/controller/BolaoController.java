@@ -23,18 +23,4 @@ public class BolaoController {
     return "rodadas";
  }
 
- @PostMapping("/palpite")
- public String palpitar(
-     @RequestParam Long jogoId,
-     @RequestParam Integer mandante,
-     @RequestParam Integer visitante
- ){
-    Palpite p=new Palpite();
-    Jogo j=jogoRepo.findById(jogoId).orElseThrow();
-    p.setJogo(j);
-    p.setPlacarMandantePalpite(mandante);
-    p.setPlacarVisitantePalpite(visitante);
-    palpiteRepo.save(p);
-    return "redirect:/bolao/rodada/"+j.getRodada();
- }
 }

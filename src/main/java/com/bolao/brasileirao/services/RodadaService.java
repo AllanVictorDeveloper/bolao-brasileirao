@@ -94,5 +94,9 @@ public class RodadaService {
         return jogoRepository.existsByRodada(rodada);
     }
 
+    public Jogo buscarPorId(Long id) {
+
+        return this.jogoRepository.findJogoById(id).get();
+    }
 }
 

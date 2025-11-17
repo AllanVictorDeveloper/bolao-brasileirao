@@ -6,9 +6,8 @@
     <link rel="stylesheet" th:href="@{/css/layout.css}">
     <link rel="stylesheet" th:href="@{/css/header.css}">
     <link rel="stylesheet" th:href="@{/css/sidebar.css}">
+    <link rel="stylesheet" th:href="@{/css/modal.css}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-
-
 </head>
 
 <body th:fragment="template(titulo, conteudo)">
@@ -26,6 +25,23 @@
 <div class="content">
     <div th:replace="${conteudo}"></div>
 </div>
+
+<script>
+
+    function abrirModal(jogoId) {
+        fetch(`/palpite/jogo/${jogoId}`)
+            .then(res => res.text())
+            .then(html => {
+                document.body.insertAdjacentHTML("beforeend", html);
+                document.getElementById("modalPalpite").style.display = "flex";
+            });
+    }
+
+    function fecharModal() {
+        document.getElementById("modalPalpite").remove();
+    }
+
+</script>
 
 </body>
 </html>

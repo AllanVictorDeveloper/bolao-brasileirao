@@ -20,11 +20,14 @@ public class Jogo extends BaseEntity {
  private Integer rodada;
 
  // Mandante
+ private Long mandanteId;
  private String mandante;
  private String mandanteSigla;
  private String mandanteEscudo;
 
+
  // Visitante
+ private Long visitanteId;
  private String visitante;
  private String visitanteSigla;
  private String visitanteEscudo;

@@ -36,6 +36,7 @@ spring:
 api:
   football:
     key: "live_3c39b2910bbe55aa3153a5a2775bdb"
+#    key: "test_003610448d93acc6ef91bc8ef81b8d"
     base-url: "https://api.api-futebol.com.br/v1"
 
   security:

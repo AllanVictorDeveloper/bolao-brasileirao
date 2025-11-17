@@ -1,0 +1,71 @@
+<div class="modal-overlay" id="modalPalpite" th:fragment="modalPalpite">
+    <div class="modal-content">
+
+        <h2 th:text="'Palpite da Rodada ' + ${jogo.rodada} + 'ª'"></h2>
+        <p th:text="${jogo.mandanteSigla} + ' x ' + ${jogo.visitanteSigla}"></p>
+
+        <form method="post" th:action="@{/palpite/salvar}">
+            <input type="hidden" name="jogoId" th:value="${jogo.id}">
+            <input type="hidden" name="rodada" th:value="${jogo.rodada}">
+
+            <!-- PLACAR -->
+            <div class="placar-inputs">
+                <div>
+                    <label>Mandante:</label>
+                    <input type="number" min="0" name="placarMandante" required>
+                </div>
+
+                <div class="x">×</div>
+
+                <div>
+                    <label>Visitante:</label>
+                    <input type="number" min="0" name="placarVisitante" required>
+                </div>
+            </div>
+
+            <!-- ATILHEIRO -->
+            <div class="form-group">
+                <label>Artilheiro:</label>
+                <select name="artilheiroId" required>
+                    <option value="" disabled selected>Selecione</option>
+                    <option th:each="a : ${artilheiros}"
+                            th:value="${a.id}"
+                            th:text="${a.nome}">
+                    </option>
+                </select>
+            </div>
+
+            <!-- PAREDÃO -->
+            <div class="form-group">
+                <label>Paredão (Goleiro):</label>
+                <select name="paredaoId" required>
+                    <option value="" disabled selected>Selecione</option>
+                    <option th:each="g : ${goleiros}"
+                            th:value="${g.id}"
+                            th:text="${g.nome}">
+                    </option>
+                </select>
+            </div>
+
+            <!-- TÉCNICO -->
+            <div class="form-group">
+                <label>Técnico:</label>
+                <select name="tecnicoId" required>
+                    <option value="" disabled selected>Selecione</option>
+                    <option th:each="t : ${tecnicos}"
+                            th:value="${t.id}"
+                            th:text="${t.nome}">
+                    </option>
+                </select>
+            </div>
+
+            <div class="modal-actions">
+                <button type="button" onclick="fecharModal()">Cancelar</button>
+                <button type="submit" class="salvar">Salvar Palpite</button>
+            </div>
+
+        </form>
+
+    </div>
+</div>
+

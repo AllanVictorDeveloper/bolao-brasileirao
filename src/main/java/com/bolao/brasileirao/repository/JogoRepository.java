@@ -17,4 +17,6 @@ public interface JogoRepository extends JpaRepository<Jogo, Long> {
 
     boolean existsByRodada(Integer rodada);
 
+    Optional<Jogo> findJogoById(Long id);
+
 }
