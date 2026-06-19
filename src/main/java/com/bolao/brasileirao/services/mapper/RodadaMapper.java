@@ -63,14 +63,30 @@ public class RodadaMapper {
         return jogo;
     }
 
-    private StatusJogo convertStatus(String status) {
+    /** Atualiza somente os campos que podem mudar após o jogo ser importado */
+    public void atualizarJogo(Jogo jogo, RodadaResponse.Partida p) {
+        jogo.setStatus(convertStatus(p.getStatus()));
+        jogo.setPlacarMandante(p.getPlacar_mandante());
+        jogo.setPlacarVisitante(p.getPlacar_visitante());
 
+        if (p.getData_realizacao_iso() != null) {
+            try {
+                jogo.setDataJogo(LocalDateTime.parse(p.getData_realizacao_iso(), ISO_FUTEBOL));
+            } catch (Exception ignored) {}
+        }
+
+        if (p.getEstadio() != null) {
+            jogo.setEstadio(p.getEstadio().getNome_popular());
+        }
+    }
+
+    public StatusJogo convertStatus(String status) {
         if (status == null) return StatusJogo.DESCONHECIDO;
 
         return switch (status.toLowerCase()) {
             case "agendado" -> StatusJogo.AGENDADO;
             case "andamento", "intervalo" -> StatusJogo.ANDAMENTO;
-            case "finalizado" -> StatusJogo.FINALIZADO;
+            case "finalizado", "encerrada" -> StatusJogo.FINALIZADO;
             default -> StatusJogo.DESCONHECIDO;
         };
     }

@@ -2,6 +2,7 @@ package com.bolao.brasileirao.controller;
 
 import com.bolao.brasileirao.services.EstatisticasImportService;
 import com.bolao.brasileirao.services.RodadaService;
+import com.bolao.brasileirao.services.interfaces.IJogadorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,6 +20,7 @@ public class AdminController {
 
     private final RodadaService rodadaService;
     private final EstatisticasImportService estatisticasImportService;
+    private final IJogadorService jogadorService;
 
     @GetMapping
     public String adminPage(Model model) {
@@ -31,13 +33,9 @@ public class AdminController {
     @ResponseBody
     public Map<String, Object> importarRodada(@RequestParam(required = false) Integer rodada) {
         try {
-            if (rodada != null) {
-                rodadaService.importarRodadaEspecifica(rodada);
-            } else {
-                rodadaService.importarRodada();
-            }
-            int importada = rodada != null ? rodada : rodadaService.obterRodadaAtual();
-            return Map.of("status", "ok", "rodada", importada);
+            int alvo = (rodada != null) ? rodada : rodadaService.obterRodadaAtualDaApi();
+            rodadaService.importarRodadaEspecifica(alvo);
+            return Map.of("status", "ok", "rodada", alvo);
         } catch (Exception e) {
             return Map.of("status", "erro", "mensagem", e.getMessage());
         }
@@ -46,15 +44,13 @@ public class AdminController {
     @GetMapping("/importar-todas-rodadas")
     @ResponseBody
     public Map<String, Object> importarTodasRodadas() {
-        int importadas = 0;
-        int ignoradas = 0;
+        int sincronizadas = 0;
         int erros = 0;
 
         for (int r = 1; r <= 38; r++) {
             try {
-                boolean importou = rodadaService.importarRodadaEspecifica(r);
-                if (importou) importadas++;
-                else ignoradas++;
+                rodadaService.importarRodadaEspecifica(r);
+                sincronizadas++;
             } catch (Exception e) {
                 erros++;
                 System.out.println("❌ Erro na rodada " + r + ": " + e.getMessage());
@@ -63,10 +59,20 @@ public class AdminController {
 
         return Map.of(
             "status", "ok",
-            "importadas", importadas,
-            "ignoradas", ignoradas,
+            "sincronizadas", sincronizadas,
             "erros", erros
         );
+    }
+
+    @GetMapping("/sincronizar-jogadores")
+    @ResponseBody
+    public Map<String, Object> sincronizarJogadores() {
+        try {
+            int total = jogadorService.sincronizarTodosJogadores();
+            return Map.of("status", "ok", "partidasSincronizadas", total);
+        } catch (Exception e) {
+            return Map.of("status", "erro", "mensagem", e.getMessage());
+        }
     }
 
     @GetMapping("/importar-stats")

@@ -1,5 +1,6 @@
 package com.bolao.brasileirao.dtos;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import lombok.Data;
 import java.util.List;
 
@@ -38,7 +39,8 @@ public class RodadaResponse {
         private Integer placar_mandante;
         private Integer placar_visitante;
 
-        private Boolean disputa_penalti;
+        /** Pode ser false (boolean) ou objeto {placar_penalti_*} durante pênaltis */
+        private JsonNode disputa_penalti;
 
         private String status;
         private String slug;

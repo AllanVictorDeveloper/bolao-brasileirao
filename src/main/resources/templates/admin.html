@@ -54,6 +54,34 @@
             </div>
         </div>
 
+        <!-- CARD: SINCRONIZAR JOGADORES -->
+        <div class="admin-card">
+            <div class="card-header">
+                <div class="card-icon icon-jogadores">
+                    <i class="bi bi-people-fill"></i>
+                </div>
+                <div>
+                    <h2>Sincronizar Jogadores</h2>
+                    <p>Varre todos os jogos importados e salva os jogadores a partir das escalações de cada partida.</p>
+                </div>
+            </div>
+
+            <div class="card-body">
+                <p class="info-text">
+                    <i class="bi bi-info-circle"></i>
+                    Partidas passadas têm escalação completa e cobrem o elenco da temporada.
+                    Partidas futuras serão ignoradas até a escalação ser divulgada.
+                </p>
+
+                <button class="btn-admin btn-jogadores" onclick="sincronizarJogadores()">
+                    <i class="bi bi-arrow-repeat"></i>
+                    Sincronizar Elencos
+                </button>
+
+                <div id="resultJogadores" class="result-msg" style="display:none"></div>
+            </div>
+        </div>
+
         <!-- CARD: IMPORTAR ESTATÍSTICAS -->
         <div class="admin-card">
             <div class="card-header">
@@ -121,8 +149,28 @@
             fetch('/admin/importar-todas-rodadas')
                 .then(r => r.json())
                 .then(data => {
-                    const msg = `✅ Concluído! ${data.importadas} importadas, ${data.ignoradas} já existiam, ${data.erros} erros.`;
+                    const msg = `✅ Concluído! ${data.sincronizadas} rodadas sincronizadas${data.erros > 0 ? `, ${data.erros} erros` : ''}.`;
                     showResult(resultEl, msg, data.erros > 0 ? 'aviso' : 'ok');
+                })
+                .catch(e => showResult(resultEl, `❌ Erro: ${e.message}`, 'erro'))
+                .finally(() => setLoading(btn, false));
+        }
+
+        function sincronizarJogadores() {
+            const resultEl = document.getElementById('resultJogadores');
+            const btn = event.target.closest('button');
+
+            setLoading(btn, true);
+            showResult(resultEl, '⏳ Sincronizando jogadores... pode levar alguns instantes.', 'info');
+
+            fetch('/admin/sincronizar-jogadores')
+                .then(r => r.json())
+                .then(data => {
+                    if (data.status === 'ok') {
+                        showResult(resultEl, `✅ Jogadores sincronizados de ${data.partidasSincronizadas} partidas!`, 'ok');
+                    } else {
+                        showResult(resultEl, `❌ ${data.mensagem}`, 'erro');
+                    }
                 })
                 .catch(e => showResult(resultEl, `❌ Erro: ${e.message}`, 'erro'))
                 .finally(() => setLoading(btn, false));

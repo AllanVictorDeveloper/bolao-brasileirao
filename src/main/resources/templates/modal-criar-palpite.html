@@ -23,15 +23,23 @@
                 </div>
             </div>
 
-            <!-- ATILHEIRO -->
+            <!-- ARTILHEIRO -->
             <div class="form-group">
                 <label>Artilheiro:</label>
                 <select name="artilheiroId" required>
                     <option value="" disabled selected>Selecione</option>
-                    <option th:each="a : ${artilheiros}"
-                            th:value="${a.id}"
-                            th:text="${a.nome}">
-                    </option>
+                    <optgroup th:label="${jogo.mandante}" th:if="${not #lists.isEmpty(artilheirosMandante)}">
+                        <option th:each="a : ${artilheirosMandante}"
+                                th:value="${a.atletaId}"
+                                th:text="${a.nome}">
+                        </option>
+                    </optgroup>
+                    <optgroup th:label="${jogo.visitante}" th:if="${not #lists.isEmpty(artilheirosVisitante)}">
+                        <option th:each="a : ${artilheirosVisitante}"
+                                th:value="${a.atletaId}"
+                                th:text="${a.nome}">
+                        </option>
+                    </optgroup>
                 </select>
             </div>
 
@@ -40,10 +48,18 @@
                 <label>Paredão (Goleiro):</label>
                 <select name="paredaoId" required>
                     <option value="" disabled selected>Selecione</option>
-                    <option th:each="g : ${goleiros}"
-                            th:value="${g.id}"
-                            th:text="${g.nome}">
-                    </option>
+                    <optgroup th:label="${jogo.mandante}" th:if="${not #lists.isEmpty(goleirosMandante)}">
+                        <option th:each="g : ${goleirosMandante}"
+                                th:value="${g.atletaId}"
+                                th:text="${g.nome}">
+                        </option>
+                    </optgroup>
+                    <optgroup th:label="${jogo.visitante}" th:if="${not #lists.isEmpty(goleirosVisitante)}">
+                        <option th:each="g : ${goleirosVisitante}"
+                                th:value="${g.atletaId}"
+                                th:text="${g.nome}">
+                        </option>
+                    </optgroup>
                 </select>
             </div>
 
@@ -52,10 +68,18 @@
                 <label>Técnico:</label>
                 <select name="tecnicoId" required>
                     <option value="" disabled selected>Selecione</option>
-                    <option th:each="t : ${tecnicos}"
-                            th:value="${t.id}"
-                            th:text="${t.nome}">
-                    </option>
+                    <optgroup th:label="${jogo.mandante}" th:if="${not #lists.isEmpty(tecnicosMandante)}">
+                        <option th:each="t : ${tecnicosMandante}"
+                                th:value="${t.atletaId}"
+                                th:text="${t.nome}">
+                        </option>
+                    </optgroup>
+                    <optgroup th:label="${jogo.visitante}" th:if="${not #lists.isEmpty(tecnicosVisitante)}">
+                        <option th:each="t : ${tecnicosVisitante}"
+                                th:value="${t.atletaId}"
+                                th:text="${t.nome}">
+                        </option>
+                    </optgroup>
                 </select>
             </div>
 
@@ -68,4 +92,3 @@
 
     </div>
 </div>
-

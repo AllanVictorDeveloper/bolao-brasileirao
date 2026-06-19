@@ -1,6 +1,7 @@
 package com.bolao.brasileirao.entity;
 
 import com.bolao.brasileirao.enums.Posicao;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -17,6 +18,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Table(name = "Jogadores")
 public class Jogador extends BaseEntity {
+
+    @Column(name = "atleta_id", unique = true)
+    private Long atletaId;
 
     private String nome;
 

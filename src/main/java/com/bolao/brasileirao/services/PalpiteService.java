@@ -46,6 +46,10 @@ public class PalpiteService {
     }
 
 
+    public Optional<Palpite> buscarPalpite(Long usuarioId, Long jogoId) {
+        return palpiteRepository.findByUsuarioIdAndJogoId(usuarioId, jogoId);
+    }
+
     public void criarOuAtualizar(PalpiteRequest req, Usuario usuario) {
 
         Jogo jogo = jogoRepository.findById(req.getJogoId())
@@ -62,6 +66,7 @@ public class PalpiteService {
         palpite.setArtilheiroId(req.getArtilheiroId());
         palpite.setParedaoId(req.getParedaoId());
         palpite.setTecnicoId(req.getTecnicoId());
+        if (palpite.getCriadoPor() == null) palpite.setCriadoPor(usuario.getUsername());
 
         palpiteRepository.save(palpite);
     }

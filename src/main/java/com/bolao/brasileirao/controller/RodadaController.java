@@ -41,22 +41,11 @@ public class RodadaController {
                 .map(JogoView::new)
                 .toList();
 
-        // --------------------------
-        // REGRA GLOBAL DA RODADA
-        // --------------------------
-        boolean podeCriarRodada = false;
-
-        if (!jogosView.isEmpty()) {
-
-            JogoView primeiro = jogosView.get(0);
-
-            // Se o primeiro jogo pode criar → todos podem criar
-            podeCriarRodada = primeiro.isPodeCriarPalpite();
-
-            // Propaga
-            for (JogoView j : jogosView) {
-                j.setPodeCriarPalpite(podeCriarRodada);
-            }
+        // Regra global da rodada: abre quando a rodada anterior terminar,
+        // fecha 20 min antes do primeiro jogo desta rodada
+        boolean podeCriarRodada = rodadaService.podeCriarPalpite(rodada, jogos);
+        for (JogoView j : jogosView) {
+            j.setPodeCriarPalpite(podeCriarRodada);
         }
 
         model.addAttribute("jogos", jogosView);

@@ -62,7 +62,8 @@
 
             <!-- Ver Palpite -->
             <button class="btn-acao ver"
-                    th:if="${jogo.podeVerPalpite}">
+                    th:if="${jogo.podeVerPalpite}"
+                    th:onclick="'abrirModalVer(' + ${jogo.jogo.id} + ')'">
                 Ver Palpite
             </button>
 

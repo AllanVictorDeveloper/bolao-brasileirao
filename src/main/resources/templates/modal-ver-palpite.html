@@ -1,0 +1,60 @@
+<div class="modal-overlay" id="modalVerPalpite" th:fragment="modalVerPalpite">
+    <div class="modal-content ver-palpite">
+
+        <div class="ver-header">
+            <h2>Meu Palpite</h2>
+            <p class="ver-subtitulo"
+               th:text="${jogo.mandante} + ' × ' + ${jogo.visitante}"></p>
+        </div>
+
+        <!-- PLACAR PALPITADO -->
+        <div class="ver-placar">
+            <div class="ver-time">
+                <img th:src="${jogo.mandanteEscudo}" class="ver-escudo" alt="mandante">
+                <span th:text="${jogo.mandanteSigla}"></span>
+            </div>
+            <div class="ver-placar-numeros">
+                <span th:text="${palpite.golsCasaPalpite}">0</span>
+                <span class="ver-x">×</span>
+                <span th:text="${palpite.golsForaPalpite}">0</span>
+            </div>
+            <div class="ver-time">
+                <img th:src="${jogo.visitanteEscudo}" class="ver-escudo" alt="visitante">
+                <span th:text="${jogo.visitanteSigla}"></span>
+            </div>
+        </div>
+
+        <!-- PLACAR REAL (se finalizado) -->
+        <div class="ver-placar-real" th:if="${jogo.placarMandante != null}">
+            <span class="ver-label-real">Placar real:</span>
+            <span class="ver-val-real"
+                  th:text="${jogo.placarMandante} + ' × ' + ${jogo.placarVisitante}"></span>
+        </div>
+
+        <!-- ESCOLHAS -->
+        <div class="ver-escolhas">
+            <div class="ver-row">
+                <span class="ver-label">Artilheiro</span>
+                <span class="ver-val" th:text="${nomeArtilheiro}">-</span>
+            </div>
+            <div class="ver-row">
+                <span class="ver-label">Paredão</span>
+                <span class="ver-val" th:text="${nomeParedao}">-</span>
+            </div>
+            <div class="ver-row">
+                <span class="ver-label">Técnico</span>
+                <span class="ver-val" th:text="${nomeTecnico}">-</span>
+            </div>
+        </div>
+
+        <!-- PONTOS (se jogo finalizado) -->
+        <div class="ver-pontos" th:if="${palpite.pontos != null}">
+            <span th:text="${palpite.pontos} + ' pontos'"></span>
+        </div>
+
+        <div class="modal-actions">
+            <button type="button" onclick="fecharModalVer()">Fechar</button>
+        </div>
+
+    </div>
+</div>

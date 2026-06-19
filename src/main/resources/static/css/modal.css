@@ -56,3 +56,79 @@ select, input[type="number"] {
     border: none;
     border-radius: 8px;
 }
+
+/* ── Modal Ver Palpite ───────────────────────────────── */
+.ver-palpite { max-width: 400px; }
+
+.ver-header { text-align: center; margin-bottom: 20px; }
+.ver-header h2 { margin: 0 0 4px; font-size: 1.2rem; }
+.ver-subtitulo { margin: 0; color: #9ca3af; font-size: 0.9rem; }
+
+.ver-placar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #1f2937;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 12px;
+}
+
+.ver-time {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.85rem;
+    color: #d1d5db;
+}
+
+.ver-escudo { width: 40px; height: 40px; object-fit: contain; }
+
+.ver-placar-numeros {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 2rem;
+    font-weight: 700;
+    color: white;
+}
+
+.ver-x { color: #6b7280; font-size: 1.4rem; }
+
+.ver-placar-real {
+    text-align: center;
+    font-size: 0.82rem;
+    color: #9ca3af;
+    margin-bottom: 16px;
+}
+.ver-label-real { margin-right: 4px; }
+.ver-val-real { color: #e5e7eb; font-weight: 600; }
+
+.ver-escolhas {
+    background: #1f2937;
+    border-radius: 12px;
+    padding: 12px 16px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.ver-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9rem;
+}
+
+.ver-label { color: #9ca3af; }
+.ver-val { color: #f3f4f6; font-weight: 500; }
+
+.ver-pontos {
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #10b981;
+    margin-bottom: 20px;
+}

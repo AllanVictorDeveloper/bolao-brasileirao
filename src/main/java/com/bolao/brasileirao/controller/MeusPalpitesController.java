@@ -1,7 +1,7 @@
 package com.bolao.brasileirao.controller;
 
+import com.bolao.brasileirao.dtos.JogoView;
 import com.bolao.brasileirao.dtos.PalpiteRequest;
-import com.bolao.brasileirao.entity.Jogador;
 import com.bolao.brasileirao.entity.Jogo;
 import com.bolao.brasileirao.entity.Palpite;
 import com.bolao.brasileirao.entity.Usuario;
@@ -45,20 +45,30 @@ public class MeusPalpitesController {
         List<Jogo> jogos = palpiteService.buscarJogosRodada(rodada);
         List<Palpite> palpites = palpiteService.buscarPalpitesUsuarioRodada(usuarioLogado.getId(), rodada);
 
-        // mapear palpites por ID do jogo para facilitar no template
         Map<Long, Palpite> mapPalpitesPorJogo = new HashMap<>();
         for (Palpite p : palpites) {
             mapPalpitesPorJogo.put(p.getJogo().getId(), p);
         }
 
-        model.addAttribute("jogos", jogos);
+        List<JogoView> jogosView = jogos.stream().map(JogoView::new).toList();
+        boolean podeCriarRodada = rodadaService.podeCriarPalpite(rodada, jogos);
+        for (JogoView j : jogosView) {
+            j.setPodeCriarPalpite(podeCriarRodada);
+            if (mapPalpitesPorJogo.containsKey(j.getJogo().getId())) {
+                j.setPodeVerPalpite(true);
+            }
+        }
+
+        model.addAttribute("jogos", jogosView);
         model.addAttribute("palpitesPorJogo", mapPalpitesPorJogo);
         model.addAttribute("rodada", rodada);
+        model.addAttribute("semJogos", jogos.isEmpty());
         model.addAttribute("hasAnterior", jogoRepository.existsByRodada(rodada - 1));
         model.addAttribute("hasProxima", jogoRepository.existsByRodada(rodada + 1));
         model.addAttribute("pagina", "meus-palpites");
+        model.addAttribute("titulo", "Meus Palpites");
 
-        return "rodadas/meus-palpites";
+        return "rodadas";
     }
 
     @GetMapping("/palpite/jogo/{id}")
@@ -68,18 +78,35 @@ public class MeusPalpitesController {
 
         jogadorService.sincronizarPorPartida(jogo.getPartidaId(), jogo.getMandanteId(), jogo.getVisitanteId());
 
-        List<Jogador> artilheiros = jogadorService.buscarArtilheirosDoTime(jogo.getMandanteId(), jogo.getVisitanteId());
-        List<Jogador> goleiros = jogadorService.buscarGoleirosDosTimes(jogo.getMandanteId(), jogo.getVisitanteId());
-        List<Jogador> tecnicos = jogadorService.buscarTecnicosDosTimes(jogo.getMandanteId(), jogo.getVisitanteId());
-
         model.addAttribute("jogo", jogo);
-        model.addAttribute("artilheiros", artilheiros);
-        model.addAttribute("goleiros", goleiros);
-        model.addAttribute("tecnicos", tecnicos);
+        model.addAttribute("artilheirosMandante", jogadorService.buscarArtilheirosPorTime(jogo.getMandanteId()));
+        model.addAttribute("artilheirosVisitante", jogadorService.buscarArtilheirosPorTime(jogo.getVisitanteId()));
+        model.addAttribute("goleirosMandante", jogadorService.buscarGoleirosPorTime(jogo.getMandanteId()));
+        model.addAttribute("goleirosVisitante", jogadorService.buscarGoleirosPorTime(jogo.getVisitanteId()));
+        model.addAttribute("tecnicosMandante", jogadorService.buscarTecnicoPorTime(jogo.getMandanteId()));
+        model.addAttribute("tecnicosVisitante", jogadorService.buscarTecnicoPorTime(jogo.getVisitanteId()));
 
         return "modal-criar-palpite :: modalPalpite";
     }
 
+
+    @GetMapping("/palpite/jogo/{id}/ver")
+    public String verModalPalpite(@PathVariable Long id,
+                                  @AuthenticationPrincipal Usuario usuario,
+                                  Model model) {
+
+        Jogo jogo = rodadaService.buscarPorId(id);
+        Palpite palpite = palpiteService.buscarPalpite(usuario.getId(), id)
+                .orElseThrow(() -> new RuntimeException("Palpite não encontrado"));
+
+        model.addAttribute("jogo", jogo);
+        model.addAttribute("palpite", palpite);
+        model.addAttribute("nomeArtilheiro", jogadorService.buscarNomePorAtletaId(palpite.getArtilheiroId()));
+        model.addAttribute("nomeParedao",    jogadorService.buscarNomePorAtletaId(palpite.getParedaoId()));
+        model.addAttribute("nomeTecnico",    jogadorService.buscarNomePorAtletaId(palpite.getTecnicoId()));
+
+        return "modal-ver-palpite :: modalVerPalpite";
+    }
 
     @PostMapping("/palpite/salvar")
     public String salvarPalpite(@ModelAttribute PalpiteRequest request,

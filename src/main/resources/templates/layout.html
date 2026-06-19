@@ -41,6 +41,19 @@
         document.getElementById("modalPalpite").remove();
     }
 
+    function abrirModalVer(jogoId) {
+        fetch(`/palpite/jogo/${jogoId}/ver`)
+            .then(res => res.text())
+            .then(html => {
+                document.body.insertAdjacentHTML("beforeend", html);
+                document.getElementById("modalVerPalpite").style.display = "flex";
+            });
+    }
+
+    function fecharModalVer() {
+        document.getElementById("modalVerPalpite").remove();
+    }
+
 </script>
 
 </body>

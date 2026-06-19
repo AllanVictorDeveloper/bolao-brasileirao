@@ -53,6 +53,24 @@
     color: #818cf8;
 }
 
+.card-icon.icon-jogadores {
+    background: rgba(251, 191, 36, 0.15);
+}
+
+.card-icon.icon-jogadores i {
+    color: #fbbf24;
+}
+
+.btn-jogadores {
+    background: rgba(251, 191, 36, 0.15);
+    color: #fbbf24;
+    border: 1px solid rgba(251, 191, 36, 0.3);
+}
+
+.btn-jogadores:hover:not(:disabled) {
+    background: rgba(251, 191, 36, 0.25);
+}
+
 .admin-card h2 {
     font-size: 20px;
     font-weight: 700;

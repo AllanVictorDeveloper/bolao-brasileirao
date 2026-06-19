@@ -1,57 +1,112 @@
 package com.bolao.brasileirao.services;
 
+import com.bolao.brasileirao.dtos.CampeonatoResponse;
 import com.bolao.brasileirao.dtos.RodadaResponse;
 import com.bolao.brasileirao.entity.Jogo;
+import com.bolao.brasileirao.entity.StatusJogo;
 import com.bolao.brasileirao.repository.JogoRepository;
 import com.bolao.brasileirao.services.mapper.RodadaMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
 public class RodadaService {
 
-    private final RestTemplate apiFutebolClient;
-    private final String apiFutebolBaseUrl;
+    private static final int BRASILEIRAO_ID = 10;
+    private static final int RODADA_MAXIMA  = 38;
+
+    private final ApiFutebolService apiFutebolService;
     private final JogoRepository jogoRepository;
     private final RodadaMapper rodadaMapper;
 
-    /** @return true se importou, false se já existia no banco */
+    // ── Importação ────────────────────────────────────────────────────
+
+    /**
+     * Sincroniza uma rodada com a API: insere novos jogos e atualiza os existentes.
+     * @return true se pelo menos um jogo novo foi inserido
+     */
     public boolean importarRodadaEspecifica(int rodada) {
-        return buscarEPersistirRodada(rodada);
+        return sincronizarRodada(rodada);
     }
 
+    /** Sincroniza a rodada atual (detectada via API). */
     public void importarRodada() {
-        Integer proxima = obterProximaRodada();
-        if (proxima == null) {
-            System.out.println("❌ Não foi possível determinar a próxima rodada");
-            return;
-        }
-        buscarEPersistirRodada(proxima);
+        int rodadaAtual = obterRodadaAtualDaApi();
+        sincronizarRodada(rodadaAtual);
     }
+
+    // ── Consulta de rodada ────────────────────────────────────────────
 
     public List<Jogo> buscarRodadaAtual() {
         return jogoRepository.findByRodadaOrderByDataJogoAsc(obterRodadaAtual());
     }
 
+    /** Rodada atual segundo o banco de dados (fallback quando a API não responde). */
     public Integer obterRodadaAtual() {
         Integer rodada = jogoRepository.findRodadaMaisAtual();
         return rodada != null ? rodada : 1;
     }
 
+    /**
+     * Rodada atual via API-Futebol (fonte de verdade).
+     * Cai no banco se a API não responder.
+     */
+    public int obterRodadaAtualDaApi() {
+        try {
+            CampeonatoResponse camp = apiFutebolService.buscarCampeonatoBrasileiro();
+            if (camp != null && camp.getRodada_atual() != null
+                    && camp.getRodada_atual().getRodada() != null) {
+                return camp.getRodada_atual().getRodada();
+            }
+        } catch (Exception e) {
+            System.out.println("⚠ Falha ao buscar rodada atual da API: " + e.getMessage());
+        }
+        return obterRodadaAtual();
+    }
+
     public Integer obterProximaRodada() {
-        final int RODADA_MAXIMA = 38;
         Integer rodada = jogoRepository.findRodadaMaisAtual();
         if (rodada == null) return 1;
         int proxima = rodada + 1;
         return proxima > RODADA_MAXIMA ? RODADA_MAXIMA : proxima;
     }
 
-    public boolean rodadaJaImportada(Integer rodada) {
-        return jogoRepository.existsByRodada(rodada);
+    // ── Regra de negócio ──────────────────────────────────────────────
+
+    /**
+     * Regra de palpite da rodada:
+     *  - Abre quando o último jogo da rodada anterior for FINALIZADO
+     *  - Fecha 20 minutos antes do primeiro jogo da rodada atual
+     *  - Bloqueia se qualquer jogo da rodada já não estiver AGENDADO
+     */
+    public boolean podeCriarPalpite(int rodada, List<Jogo> jogosRodada) {
+        if (jogosRodada.isEmpty()) return false;
+
+        boolean todosAgendados = jogosRodada.stream()
+                .allMatch(j -> j.getStatus() == StatusJogo.AGENDADO);
+        if (!todosAgendados) return false;
+
+        LocalDateTime primeiroInicio = jogosRodada.stream()
+                .map(Jogo::getDataJogo)
+                .filter(Objects::nonNull)
+                .min(LocalDateTime::compareTo)
+                .orElse(null);
+        if (primeiroInicio == null) return false;
+
+        if (LocalDateTime.now().isAfter(primeiroInicio.minusMinutes(20))) return false;
+
+        if (rodada <= 1) return true;
+
+        List<Jogo> jogosAnteriores = jogoRepository.findByRodadaOrderByDataJogoAsc(rodada - 1);
+        if (jogosAnteriores.isEmpty()) return true;
+
+        return jogosAnteriores.stream()
+                .allMatch(j -> j.getStatus() == StatusJogo.FINALIZADO);
     }
 
     public Jogo buscarPorId(Long id) {
@@ -59,31 +114,39 @@ public class RodadaService {
                 .orElseThrow(() -> new RuntimeException("Jogo não encontrado: " + id));
     }
 
-    /** @return true se importou com sucesso, false se já existia */
-    private boolean buscarEPersistirRodada(int rodada) {
-        if (rodadaJaImportada(rodada)) {
-            System.out.println("⚠ Rodada " + rodada + " já importada. Ignorando...");
-            return false;
-        }
+    // ── Privados ──────────────────────────────────────────────────────
 
-        System.out.println("➡ Buscando rodada " + rodada + " na API-Futebol...");
+    /**
+     * Sincroniza a rodada com a API: insere novos e atualiza os existentes.
+     * @return true se pelo menos um jogo novo foi inserido
+     */
+    private boolean sincronizarRodada(int rodada) {
+        System.out.println("➡ Sincronizando rodada " + rodada + " com a API-Futebol...");
 
-        RodadaResponse apiResponse = apiFutebolClient.getForObject(
-                apiFutebolBaseUrl + "/campeonatos/10/rodadas/" + rodada,
-                RodadaResponse.class
-        );
+        RodadaResponse apiResponse = apiFutebolService.buscarRodada(BRASILEIRAO_ID, rodada);
 
-        if (apiResponse == null || apiResponse.getPartidas() == null) {
+        if (apiResponse == null || apiResponse.getPartidas() == null || apiResponse.getPartidas().isEmpty()) {
             System.out.println("❌ Nenhuma partida encontrada para rodada " + rodada);
             return false;
         }
 
-        List<Jogo> jogos = apiResponse.getPartidas().stream()
-                .map(p -> rodadaMapper.converterParaJogo(p, rodada))
-                .toList();
+        int novos = 0;
+        int atualizados = 0;
 
-        jogoRepository.saveAll(jogos);
-        System.out.println("✅ Rodada " + rodada + " importada com sucesso!");
-        return true;
+        for (RodadaResponse.Partida p : apiResponse.getPartidas()) {
+            var existente = jogoRepository.findByPartidaId(p.getPartida_id());
+            if (existente.isPresent()) {
+                rodadaMapper.atualizarJogo(existente.get(), p);
+                jogoRepository.save(existente.get());
+                atualizados++;
+            } else {
+                Jogo novo = rodadaMapper.converterParaJogo(p, rodada);
+                jogoRepository.save(novo);
+                novos++;
+            }
+        }
+
+        System.out.println("✅ Rodada " + rodada + " | novos=" + novos + " atualizados=" + atualizados);
+        return novos > 0;
     }
 }
