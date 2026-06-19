@@ -43,4 +43,6 @@ public class Jogo extends BaseEntity {
 
  @Enumerated(EnumType.STRING)
  private StatusJogo status;
+
+ private boolean statsImportadas = false;
 }

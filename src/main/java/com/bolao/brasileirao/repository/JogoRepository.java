@@ -19,4 +19,5 @@ public interface JogoRepository extends JpaRepository<Jogo, Long> {
 
     Optional<Jogo> findJogoById(Long id);
 
+    List<Jogo> findByStatusAndStatsImportadasFalse(com.bolao.brasileirao.entity.StatusJogo status);
 }

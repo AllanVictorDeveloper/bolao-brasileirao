@@ -9,4 +9,6 @@ import java.util.Optional;
 public interface EstatisticaJogadorRodadaRepository extends JpaRepository<EstatisticaJogadorRodada, Long> {
     Optional<EstatisticaJogadorRodada> findByJogadorIdAndRodada(Long jogadorId, Integer rodada);
     List<EstatisticaJogadorRodada> findByRodada(Integer rodada);
+    List<EstatisticaJogadorRodada> findByJogadorIdInAndRodadaAndJogouTrue(List<Long> jogadorIds, Integer rodada);
+    boolean existsByJogadorIdAndRodada(Long jogadorId, Integer rodada);
 }

@@ -17,4 +17,5 @@ public interface JogadorRepository extends JpaRepository<Jogador, Long> {
     List<Jogador> findByTimeIdInAndPosicao(List<Long> ids, Posicao posicao);
 
     boolean existsByTimeId(Long timeId);
+    List<Jogador> findByTimeIdAndPosicao(Long timeId, Posicao posicao);
 }

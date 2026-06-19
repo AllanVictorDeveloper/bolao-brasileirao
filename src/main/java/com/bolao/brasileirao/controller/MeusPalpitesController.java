@@ -66,7 +66,7 @@ public class MeusPalpitesController {
 
         Jogo jogo = rodadaService.buscarPorId(id);
 
-        jogadorService.sincronizarAmbosTimes(jogo.getMandanteId(), jogo.getVisitanteId());
+        jogadorService.sincronizarPorPartida(jogo.getPartidaId(), jogo.getMandanteId(), jogo.getVisitanteId());
 
         List<Jogador> artilheiros = jogadorService.buscarArtilheirosDoTime(jogo.getMandanteId(), jogo.getVisitanteId());
         List<Jogador> goleiros = jogadorService.buscarGoleirosDosTimes(jogo.getMandanteId(), jogo.getVisitanteId());
@@ -87,7 +87,7 @@ public class MeusPalpitesController {
 
         palpiteService.criarOuAtualizar(request, usuario);
 
-        return "redirect:/rodadas?rodada=" + request.getRodada();
+        return "redirect:/meus-palpites?rodada=" + request.getRodada();
     }
 
 }

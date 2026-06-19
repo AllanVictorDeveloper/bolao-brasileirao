@@ -48,15 +48,19 @@ public class PontuacaoService  {
         int pontos = 0;
 
         EstatisticaJogadorRodada stats = IEstatisticasService.buscarPorJogadorERodada(artilheiroId, rodada);
+
         if (stats == null || !stats.isJogou()) {
-            // não jogou → pontuação nula
+            stats = IEstatisticasService.buscarReservaArtilheiroDoMesmoTime(artilheiroId, rodada);
+        }
+
+        if (stats == null || !stats.isJogou()) {
             return 0;
         }
 
-        // 10 pontos por gol
         pontos += (stats.getGols() != null ? stats.getGols() * 10 : 0);
+        pontos += (stats.getAssistencias() != null ? stats.getAssistencias() * 5 : 0);
+        pontos -= (stats.getPenaltisPerdidos() != null ? stats.getPenaltisPerdidos() * 10 : 0);
 
-        // vermelho → -10
         if (stats.isLevouVermelho()) {
             pontos -= 10;
         }
@@ -66,9 +70,9 @@ public class PontuacaoService  {
 
     private int calcularParedao(Long paredaoId, Integer rodada) {
 
-        // não escalou paredão → -20
+        // não escalou paredão → -30
         if (paredaoId == null) {
-            return -20;
+            return -30;
         }
 
         EstatisticaJogadorRodada gkStats =
@@ -85,14 +89,11 @@ public class PontuacaoService  {
             int golsSofridos = gkStats.getGolsSofridos() != null ? gkStats.getGolsSofridos() : 0;
 
             if (golsSofridos == 0) {
-                // não sofreu gol → +10
                 pontos += 10;
-            } else {
-                // sofreu gol (1 ou mais) → -10
-                pontos -= 10;
             }
 
-            // vermelho → -10
+            pontos += (gkStats.getPenaltisDefendidos() != null ? gkStats.getPenaltisDefendidos() * 10 : 0);
+
             if (gkStats.isLevouVermelho()) {
                 pontos -= 10;
             }

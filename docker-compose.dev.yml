@@ -1,0 +1,39 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: bolao_mysql_dev
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: Dev@llan
+      MYSQL_DATABASE: bolaodb_dev
+    ports:
+      - "3306:3306"
+    volumes:
+      - bolao_mysql_data:/var/lib/mysql
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-pDev@llan"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: bolao_backend_dev
+    restart: unless-stopped
+    depends_on:
+      mysql:
+        condition: service_healthy
+    network_mode: host
+    volumes:
+      - /run/systemd/resolve/resolv.conf:/etc/resolv.conf:ro
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3306/bolaodb_dev?allowPublicKeyRetrieval=true&useSSL=false
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: Dev@llan
+
+volumes:
+  bolao_mysql_data:

@@ -46,6 +46,12 @@
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
 
+        <!-- THYMELEAF + SPRING SECURITY (sec:authorize nos templates) -->
+        <dependency>
+            <groupId>org.thymeleaf.extras</groupId>
+            <artifactId>thymeleaf-extras-springsecurity6</artifactId>
+        </dependency>
+
         <!-- JWT -->
 <!--        <dependency>-->
 <!--            <groupId>com.auth0</groupId>-->

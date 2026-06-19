@@ -1,108 +1,101 @@
 package com.bolao.brasileirao.services;
 
-import com.bolao.brasileirao.dtos.JogadorApiResponse;
+import com.bolao.brasileirao.dtos.PartidaDetalheResponse;
+import com.bolao.brasileirao.dtos.PartidaDetalheResponse.EscalacaoTime;
+import com.bolao.brasileirao.dtos.PartidaDetalheResponse.JogadorEscalado;
 import com.bolao.brasileirao.entity.Jogador;
 import com.bolao.brasileirao.enums.Posicao;
 import com.bolao.brasileirao.repository.JogadorRepository;
 import com.bolao.brasileirao.services.interfaces.IJogadorService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class JogadorServiceImpl implements IJogadorService {
 
-    @Autowired
-    private JogadorRepository jogadorRepository;
+    private final JogadorRepository jogadorRepository;
+    private final ApiFutebolService apiFutebolService;
 
-    @Autowired
-    private ApiFutebolService api;
-
-    public List<Jogador> buscarElencoDosTimes(Long mandanteId, Long visitanteId) {
-        sincronizarTimeSeNecessario(mandanteId);
-        sincronizarTimeSeNecessario(visitanteId);
-
-        return jogadorRepository.findByTimeIdIn(List.of(mandanteId, visitanteId));
-    }
-
+    /**
+     * Sincroniza titulares, reservas e técnico de ambos os times
+     * a partir da escalação retornada pelo endpoint GET /partidas/{partidaId}.
+     * Se a escalação ainda não estiver disponível (jogo não iniciado), mantém
+     * os jogadores que já existem no banco para esses times.
+     */
     @Override
-    public void sincronizarAmbosTimes(Long mandanteId, Long visitanteId) {
-        sincronizarTimeSeNecessario(mandanteId);
-        sincronizarTimeSeNecessario(visitanteId);
-    }
+    public void sincronizarPorPartida(Long partidaId, Long mandanteId, Long visitanteId) {
+        PartidaDetalheResponse detalhe = apiFutebolService.buscarDetalhesPartida(partidaId);
 
-    // ================== SINCRONIZAR TIME ==================
-    private void sincronizarTimeSeNecessario(Long timeId) {
+        if (detalhe == null || detalhe.getEscalacoes() == null) return;
 
-        if (jogadorRepository.existsByTimeId(timeId))
-            return; // já existe no banco → não sincroniza
-
-        // --- Busca elenco ---
-        List<JogadorApiResponse> elenco = api.buscarElenco(timeId);
-
-        // --- Busca técnico ---
-        JogadorApiResponse tecnico = api.buscarTecnico(timeId);
-
-        // --- Converte e salva elenco
-        List<Jogador> jogadores = elenco.stream()
-                .map(this::mapearParaEntidade)
-                .toList();
-
-        // salva elenco
-        jogadorRepository.saveAll(jogadores);
-
-        // salva técnico separado
-        if (tecnico != null) {
-            Jogador t = mapearParaEntidade(tecnico);
-            t.setPosicao(Posicao.TECNICO);
-            jogadorRepository.save(t);
+        if (detalhe.getEscalacoes().getMandante() != null) {
+            sincronizarEscalacao(detalhe.getEscalacoes().getMandante(), mandanteId);
+        }
+        if (detalhe.getEscalacoes().getVisitante() != null) {
+            sincronizarEscalacao(detalhe.getEscalacoes().getVisitante(), visitanteId);
         }
     }
 
+    private void sincronizarEscalacao(EscalacaoTime escalacao, Long timeId) {
+        List<Jogador> jogadores = new ArrayList<>();
 
+        if (escalacao.getTitulares() != null) {
+            for (JogadorEscalado j : escalacao.getTitulares()) {
+                if (j.getAtleta() == null) continue;
+                jogadores.add(mapear(j.getAtleta().getAtleta_id(),
+                        j.getAtleta().getNome_popular(), timeId, posicaoDe(j)));
+            }
+        }
 
+        if (escalacao.getReservas() != null) {
+            for (JogadorEscalado j : escalacao.getReservas()) {
+                if (j.getAtleta() == null) continue;
+                jogadores.add(mapear(j.getAtleta().getAtleta_id(),
+                        j.getAtleta().getNome_popular(), timeId, posicaoDe(j)));
+            }
+        }
 
-    private Jogador mapearParaEntidade(JogadorApiResponse j) {
-        Jogador jogador = new Jogador();
-        jogador.setId(j.getId());
-        jogador.setNome(j.getNome());
-        jogador.setTimeId(j.getTime_id());
+        if (escalacao.getTecnico() != null && escalacao.getTecnico().getTecnico_id() != null) {
+            jogadores.add(mapear(escalacao.getTecnico().getTecnico_id(),
+                    escalacao.getTecnico().getNome_popular(), timeId, Posicao.TECNICO));
+        }
 
-        jogador.setPosicao(
-                switch (j.getPosicao().toLowerCase()) {
-                    case "goleiro" -> Posicao.GOLEIRO;
-                    case "tecnico" -> Posicao.TECNICO;
-                    case "atacante" -> Posicao.JOGADOR_LINHA;
-                    default -> Posicao.JOGADOR_LINHA; // fallback
-                }
-        );
+        jogadorRepository.saveAll(jogadores);
+    }
 
-        return jogador;
+    private Jogador mapear(Long id, String nome, Long timeId, Posicao posicao) {
+        Jogador j = jogadorRepository.findById(id).orElse(new Jogador());
+        j.setId(id);
+        j.setNome(nome);
+        j.setTimeId(timeId);
+        j.setPosicao(posicao);
+        if (j.getCriadoPor() == null) j.setCriadoPor("sistema");
+        return j;
+    }
+
+    private Posicao posicaoDe(JogadorEscalado j) {
+        return j.isGoleiro() ? Posicao.GOLEIRO : Posicao.JOGADOR_LINHA;
     }
 
     @Override
     public List<Jogador> buscarArtilheirosDoTime(Long mandanteId, Long visitanteId) {
         return jogadorRepository.findByTimeIdInAndPosicao(
-                List.of(mandanteId, visitanteId),
-                Posicao.JOGADOR_LINHA
-        );
+                List.of(mandanteId, visitanteId), Posicao.JOGADOR_LINHA);
     }
 
     @Override
     public List<Jogador> buscarGoleirosDosTimes(Long mandanteId, Long visitanteId) {
         return jogadorRepository.findByTimeIdInAndPosicao(
-                List.of(mandanteId, visitanteId),
-                Posicao.GOLEIRO
-        );
+                List.of(mandanteId, visitanteId), Posicao.GOLEIRO);
     }
 
     @Override
     public List<Jogador> buscarTecnicosDosTimes(Long mandanteId, Long visitanteId) {
-
         return jogadorRepository.findByTimeIdInAndPosicao(
-                List.of(mandanteId, visitanteId),
-                Posicao.TECNICO
-        );
+                List.of(mandanteId, visitanteId), Posicao.TECNICO);
     }
 }

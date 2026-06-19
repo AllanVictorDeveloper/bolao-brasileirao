@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" th:href="@{/css/admin.css}">
+</head>
+
+<body th:replace="~{layout :: template(titulo='Painel Admin', conteudo=~{admin :: content})}">
+
+<div th:fragment="content" class="admin-wrapper">
+
+    <div class="title-box">
+        <h1>Painel Administrativo</h1>
+        <p class="sub">Gerencie a importação de dados da API-Futebol.</p>
+    </div>
+
+    <div class="admin-grid">
+
+        <!-- CARD: IMPORTAR RODADA -->
+        <div class="admin-card">
+            <div class="card-header">
+                <div class="card-icon">
+                    <i class="bi bi-cloud-download-fill"></i>
+                </div>
+                <div>
+                    <h2>Importar Rodada</h2>
+                    <p>Busca os jogos de uma rodada na API-Futebol e salva no banco.</p>
+                </div>
+            </div>
+
+            <div class="card-body">
+                <div class="input-group">
+                    <label for="inputRodada">Rodada (1 – 38)</label>
+                    <input type="number"
+                           id="inputRodada"
+                           class="admin-input"
+                           min="1" max="38"
+                           th:value="${proximaRodada}"
+                           placeholder="Ex: 1">
+                </div>
+
+                <div class="btn-row">
+                    <button class="btn-admin btn-primary" onclick="importarRodada()">
+                        <i class="bi bi-download"></i>
+                        Importar esta rodada
+                    </button>
+
+                    <button class="btn-admin btn-outline" onclick="importarTodasRodadas()">
+                        <i class="bi bi-cloud-arrow-down-fill"></i>
+                        Importar todas (1–38)
+                    </button>
+                </div>
+
+                <div id="resultRodada" class="result-msg" style="display:none"></div>
+            </div>
+        </div>
+
+        <!-- CARD: IMPORTAR ESTATÍSTICAS -->
+        <div class="admin-card">
+            <div class="card-header">
+                <div class="card-icon icon-stats">
+                    <i class="bi bi-bar-chart-fill"></i>
+                </div>
+                <div>
+                    <h2>Importar Estatísticas</h2>
+                    <p>Importa gols, cartões e escalações de todas as partidas finalizadas pendentes.</p>
+                </div>
+            </div>
+
+            <div class="card-body">
+                <p class="info-text">
+                    <i class="bi bi-info-circle"></i>
+                    Processa automaticamente todas as partidas com status <strong>FINALIZADO</strong>
+                    que ainda não tiveram as estatísticas importadas.
+                </p>
+
+                <button class="btn-admin btn-secondary" onclick="importarStats()">
+                    <i class="bi bi-graph-up-arrow"></i>
+                    Importar Stats
+                </button>
+
+                <div id="resultStats" class="result-msg" style="display:none"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function importarRodada() {
+            const rodada = document.getElementById('inputRodada').value;
+            const resultEl = document.getElementById('resultRodada');
+            const btn = event.target.closest('button');
+
+            setLoading(btn, true);
+            resultEl.style.display = 'none';
+
+            const url = rodada
+                ? `/admin/importar-rodada?rodada=${rodada}`
+                : '/admin/importar-rodada';
+
+            fetch(url)
+                .then(r => r.json())
+                .then(data => {
+                    if (data.status === 'ok') {
+                        showResult(resultEl, `✅ Rodada ${data.rodada} importada com sucesso!`, 'ok');
+                    } else {
+                        showResult(resultEl, `❌ ${data.mensagem}`, 'erro');
+                    }
+                })
+                .catch(e => showResult(resultEl, `❌ Erro de conexão: ${e.message}`, 'erro'))
+                .finally(() => setLoading(btn, false));
+        }
+
+        function importarTodasRodadas() {
+            const resultEl = document.getElementById('resultRodada');
+            const btn = event.target.closest('button');
+
+            setLoading(btn, true);
+            resultEl.style.display = 'none';
+            showResult(resultEl, '⏳ Importando todas as rodadas... isso pode levar alguns segundos.', 'info');
+
+            fetch('/admin/importar-todas-rodadas')
+                .then(r => r.json())
+                .then(data => {
+                    const msg = `✅ Concluído! ${data.importadas} importadas, ${data.ignoradas} já existiam, ${data.erros} erros.`;
+                    showResult(resultEl, msg, data.erros > 0 ? 'aviso' : 'ok');
+                })
+                .catch(e => showResult(resultEl, `❌ Erro: ${e.message}`, 'erro'))
+                .finally(() => setLoading(btn, false));
+        }
+
+        function importarStats() {
+            const resultEl = document.getElementById('resultStats');
+            const btn = event.target.closest('button');
+
+            setLoading(btn, true);
+            resultEl.style.display = 'none';
+
+            fetch('/admin/importar-stats')
+                .then(r => r.json())
+                .then(data => {
+                    if (data.status === 'ok') {
+                        showResult(resultEl, '✅ Estatísticas importadas com sucesso!', 'ok');
+                    } else {
+                        showResult(resultEl, `❌ ${data.mensagem}`, 'erro');
+                    }
+                })
+                .catch(e => showResult(resultEl, `❌ Erro de conexão: ${e.message}`, 'erro'))
+                .finally(() => setLoading(btn, false));
+        }
+
+        function setLoading(btn, loading) {
+            btn.disabled = loading;
+            btn.style.opacity = loading ? '0.6' : '1';
+        }
+
+        function showResult(el, msg, tipo) {
+            el.textContent = msg;
+            el.className = `result-msg ${tipo}`;
+            el.style.display = 'block';
+        }
+    </script>
+
+</div>
+
+</body>
+</html>

@@ -1,6 +1,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
 
 <div xmlns:th="http://www.thymeleaf.org"
+     xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
      th:fragment="sidebar">
 
     <aside id="sidebar" class="sidebar">
@@ -38,6 +39,15 @@
                    data-title="Rodadas">
                     <i class="bi bi-lightning-fill"></i>
                     <span>Meus Palpites</span>
+                </a>
+            </li>
+
+            <li sec:authorize="hasRole('ADMINISTRADOR')">
+                <a th:href="@{/admin}"
+                   th:classappend="${pagina} == 'admin' ? 'active' : ''"
+                   data-title="Admin">
+                    <i class="bi bi-gear-fill"></i>
+                    <span>Admin</span>
                 </a>
             </li>
         </ul>

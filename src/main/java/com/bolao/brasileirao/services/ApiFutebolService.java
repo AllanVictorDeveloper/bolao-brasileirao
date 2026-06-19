@@ -1,53 +1,22 @@
 package com.bolao.brasileirao.services;
 
-import com.bolao.brasileirao.dtos.ElencoApiResponse;
-import com.bolao.brasileirao.dtos.JogadorApiResponse;
-import com.bolao.brasileirao.dtos.TecnicoApiResponse;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.bolao.brasileirao.dtos.PartidaDetalheResponse;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
-
-import java.util.List;
+import org.springframework.web.client.RestTemplate;
 
 @Service
+@RequiredArgsConstructor
 public class ApiFutebolService {
 
-    @Autowired
-    private WebClient apiFutebolClient;
+    private final RestTemplate apiFutebolClient;
+    private final String apiFutebolBaseUrl;
 
-    // ========== ELENCO DO TIME ==========
-    public List<JogadorApiResponse> buscarElenco(Long timeId) {
-
-        var response = apiFutebolClient.get()
-                .uri("/times/" + timeId + "/elenco")
-                .retrieve()
-                .bodyToMono(ElencoApiResponse.class)
-                .block();
-
-        return response != null ? response.getJogadores() : List.of();
-    }
-
-    // ========== TÉCNICO DO TIME ==========
-    public JogadorApiResponse buscarTecnico(Long timeId) {
-
-        var response = apiFutebolClient.get()
-                .uri("/times/" + timeId + "/tecnico")
-                .retrieve()
-                .bodyToMono(TecnicoApiResponse.class)
-                .block();
-
-        return response != null ? response.getTecnico() : null;
-    }
-
-    // ========== GOLEIRO TITULAR ==========
-    public JogadorApiResponse buscarGoleiroTitular(Long timeId) {
-
-        var elenco = buscarElenco(timeId);
-
-        return elenco.stream()
-                .filter(j -> j.getPosicao().equalsIgnoreCase("goleiro"))
-                .findFirst()
-                .orElse(null);
+    public PartidaDetalheResponse buscarDetalhesPartida(Long partidaId) {
+        return apiFutebolClient.getForObject(
+                apiFutebolBaseUrl + "/partidas/" + partidaId,
+                PartidaDetalheResponse.class
+        );
     }
 }
-

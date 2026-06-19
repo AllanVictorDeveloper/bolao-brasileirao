@@ -12,5 +12,5 @@ public interface IJogadorService {
 
     List<Jogador> buscarTecnicosDosTimes(Long mandanteId, Long visitanteId);
 
-    void sincronizarAmbosTimes(Long mandanteId, Long visitanteId);
+    void sincronizarPorPartida(Long partidaId, Long mandanteId, Long visitanteId);
 }

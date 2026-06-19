@@ -57,10 +57,8 @@ public class PalpiteService {
         Palpite palpite = existente.orElse(new Palpite());
         palpite.setUsuario(usuario);
         palpite.setJogo(jogo);
-//        palpite.setRodada(jogo.getRodada());
-//
-//        palpite.setPlacarMandante(req.getPlacarMandante());
-//        palpite.setPlacarVisitante(req.getPlacarVisitante());
+        palpite.setGolsCasaPalpite(req.getPlacarMandante());
+        palpite.setGolsForaPalpite(req.getPlacarVisitante());
         palpite.setArtilheiroId(req.getArtilheiroId());
         palpite.setParedaoId(req.getParedaoId());
         palpite.setTecnicoId(req.getTecnicoId());

@@ -18,10 +18,15 @@ public class EstatisticaJogadorRodada extends BaseEntity{
     private Long jogadorId;
     private Integer rodada;
 
-    private Integer gols;          // gols marcados
-    private Integer golsSofridos;  // para goleiros
+    private Integer gols;
+    private Integer golsSofridos;
     private boolean jogou;
     private boolean levouVermelho;
-    private boolean timeVenceu;    // útil para técnico
+    private boolean timeVenceu;
+
+    // Campos abaixo não são fornecidos pela API-Futebol — ficam null até integração manual ou outra fonte
+    private Integer assistencias;
+    private Integer penaltisDefendidos;
+    private Integer penaltisPerdidos;
 
 }

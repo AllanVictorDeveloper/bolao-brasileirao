@@ -6,9 +6,8 @@ public interface IEstatisticasService {
 
     EstatisticaJogadorRodada buscarPorJogadorERodada(Long jogadorId, Integer rodada);
 
-    /**
-     * Busca estatística do goleiro reserva caso o titular não jogue.
-     */
     EstatisticaJogadorRodada buscarReservaGoleiroDoMesmoTime(Long goleiroTitularId, Integer rodada);
+
+    EstatisticaJogadorRodada buscarReservaArtilheiroDoMesmoTime(Long artilheiroTitularId, Integer rodada);
 
 }
