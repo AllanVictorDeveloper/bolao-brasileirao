@@ -12,14 +12,16 @@
             <div class="placar-inputs">
                 <div>
                     <label>Mandante:</label>
-                    <input type="number" min="0" name="placarMandante" required>
+                    <input type="number" min="0" name="placarMandante" required
+                           th:value="${palpite != null ? palpite.golsCasaPalpite : ''}">
                 </div>
 
                 <div class="x">×</div>
 
                 <div>
                     <label>Visitante:</label>
-                    <input type="number" min="0" name="placarVisitante" required>
+                    <input type="number" min="0" name="placarVisitante" required
+                           th:value="${palpite != null ? palpite.golsForaPalpite : ''}">
                 </div>
             </div>
 
@@ -27,17 +29,19 @@
             <div class="form-group">
                 <label>Artilheiro:</label>
                 <select name="artilheiroId" required>
-                    <option value="" disabled selected>Selecione</option>
+                    <option value="" disabled th:selected="${palpite == null}">Selecione</option>
                     <optgroup th:label="${jogo.mandante}" th:if="${not #lists.isEmpty(artilheirosMandante)}">
                         <option th:each="a : ${artilheirosMandante}"
                                 th:value="${a.atletaId}"
-                                th:text="${a.nome}">
+                                th:text="${a.nome}"
+                                th:selected="${palpite != null and palpite.artilheiroId == a.atletaId}">
                         </option>
                     </optgroup>
                     <optgroup th:label="${jogo.visitante}" th:if="${not #lists.isEmpty(artilheirosVisitante)}">
                         <option th:each="a : ${artilheirosVisitante}"
                                 th:value="${a.atletaId}"
-                                th:text="${a.nome}">
+                                th:text="${a.nome}"
+                                th:selected="${palpite != null and palpite.artilheiroId == a.atletaId}">
                         </option>
                     </optgroup>
                 </select>
@@ -47,17 +51,19 @@
             <div class="form-group">
                 <label>Paredão (Goleiro):</label>
                 <select name="paredaoId" required>
-                    <option value="" disabled selected>Selecione</option>
+                    <option value="" disabled th:selected="${palpite == null}">Selecione</option>
                     <optgroup th:label="${jogo.mandante}" th:if="${not #lists.isEmpty(goleirosMandante)}">
                         <option th:each="g : ${goleirosMandante}"
                                 th:value="${g.atletaId}"
-                                th:text="${g.nome}">
+                                th:text="${g.nome}"
+                                th:selected="${palpite != null and palpite.paredaoId == g.atletaId}">
                         </option>
                     </optgroup>
                     <optgroup th:label="${jogo.visitante}" th:if="${not #lists.isEmpty(goleirosVisitante)}">
                         <option th:each="g : ${goleirosVisitante}"
                                 th:value="${g.atletaId}"
-                                th:text="${g.nome}">
+                                th:text="${g.nome}"
+                                th:selected="${palpite != null and palpite.paredaoId == g.atletaId}">
                         </option>
                     </optgroup>
                 </select>
@@ -67,17 +73,19 @@
             <div class="form-group">
                 <label>Técnico:</label>
                 <select name="tecnicoId" required>
-                    <option value="" disabled selected>Selecione</option>
+                    <option value="" disabled th:selected="${palpite == null}">Selecione</option>
                     <optgroup th:label="${jogo.mandante}" th:if="${not #lists.isEmpty(tecnicosMandante)}">
                         <option th:each="t : ${tecnicosMandante}"
                                 th:value="${t.atletaId}"
-                                th:text="${t.nome}">
+                                th:text="${t.nome}"
+                                th:selected="${palpite != null and palpite.tecnicoId == t.atletaId}">
                         </option>
                     </optgroup>
                     <optgroup th:label="${jogo.visitante}" th:if="${not #lists.isEmpty(tecnicosVisitante)}">
                         <option th:each="t : ${tecnicosVisitante}"
                                 th:value="${t.atletaId}"
-                                th:text="${t.nome}">
+                                th:text="${t.nome}"
+                                th:selected="${palpite != null and palpite.tecnicoId == t.atletaId}">
                         </option>
                     </optgroup>
                 </select>
@@ -85,7 +93,10 @@
 
             <div class="modal-actions">
                 <button type="button" onclick="fecharModal()">Cancelar</button>
-                <button type="submit" class="salvar">Salvar Palpite</button>
+                <button type="submit" class="salvar"
+                        th:text="${palpite != null ? 'Salvar Alterações' : 'Salvar Palpite'}">
+                    Salvar Palpite
+                </button>
             </div>
 
         </form>

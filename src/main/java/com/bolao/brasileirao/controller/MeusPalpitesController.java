@@ -55,8 +55,9 @@ public class MeusPalpitesController {
         for (JogoView j : jogosView) {
             j.setPodeCriarPalpite(podeCriarRodada);
             if (mapPalpitesPorJogo.containsKey(j.getJogo().getId())) {
-                j.setPodeVerPalpite(true);
+                j.setTemPalpite(true);
             }
+            j.calcularBotoes();
         }
 
         model.addAttribute("jogos", jogosView);
@@ -72,11 +73,16 @@ public class MeusPalpitesController {
     }
 
     @GetMapping("/palpite/jogo/{id}")
-    public String abrirModalCriarPalpite(@PathVariable Long id, Model model) {
+    public String abrirModalCriarPalpite(@PathVariable Long id,
+                                         @AuthenticationPrincipal Usuario usuario,
+                                         Model model) {
 
         Jogo jogo = rodadaService.buscarPorId(id);
 
         jogadorService.sincronizarPorPartida(jogo.getPartidaId(), jogo.getMandanteId(), jogo.getVisitanteId());
+
+        palpiteService.buscarPalpite(usuario.getId(), id)
+                .ifPresent(p -> model.addAttribute("palpite", p));
 
         model.addAttribute("jogo", jogo);
         model.addAttribute("artilheirosMandante", jogadorService.buscarArtilheirosPorTime(jogo.getMandanteId()));

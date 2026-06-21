@@ -16,12 +16,16 @@
 
     <!-- CABEÇALHO -->
     <div class="rodada-header">
-        <a th:if="${hasAnterior}" th:href="@{/rodadas(rodada=${rodada - 1})}" class="nav-btn btn-link">&lt;</a>
+        <a th:if="${hasAnterior}"
+           th:href="${'/' + pagina + '?rodada=' + (rodada - 1)}"
+           class="nav-btn btn-link">&lt;</a>
         <span th:if="${!hasAnterior}" class="nav-btn nav-disabled">&lt;</span>
 
         <h2 th:text="${rodada} + 'ª RODADA'"></h2>
 
-        <a th:if="${hasProxima}" th:href="@{/rodadas(rodada=${rodada + 1})}" class="nav-btn btn-link">&gt;</a>
+        <a th:if="${hasProxima}"
+           th:href="${'/' + pagina + '?rodada=' + (rodada + 1)}"
+           class="nav-btn btn-link">&gt;</a>
         <span th:if="${!hasProxima}" class="nav-btn nav-disabled">&gt;</span>
     </div>
 
@@ -52,17 +56,20 @@
         <!-- BOTÕES DO CARD -->
         <div class="card-actions">
 
-            <!-- Criar Palpite -->
             <button class="btn-acao criar"
-                    th:if="${jogo.podeCriarPalpite}"
+                    th:if="${jogo.mostrarCriar}"
                     th:onclick="'abrirModal(' + ${jogo.jogo.id} + ')'">
                 Criar Palpite
             </button>
 
+            <button class="btn-acao editar"
+                    th:if="${jogo.mostrarEditar}"
+                    th:onclick="'abrirModal(' + ${jogo.jogo.id} + ')'">
+                Editar Palpite
+            </button>
 
-            <!-- Ver Palpite -->
             <button class="btn-acao ver"
-                    th:if="${jogo.podeVerPalpite}"
+                    th:if="${jogo.mostrarVer}"
                     th:onclick="'abrirModalVer(' + ${jogo.jogo.id} + ')'">
                 Ver Palpite
             </button>
