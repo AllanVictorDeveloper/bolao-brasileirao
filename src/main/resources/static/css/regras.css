@@ -1,0 +1,209 @@
+/* ── Wrapper ──────────────────────────────────── */
+.rg-wrapper {
+    width: 100%;
+    padding-bottom: 48px;
+    color: #f1f5f9;
+}
+
+/* ── Cabeçalho ────────────────────────────────── */
+.rg-header {
+    margin-bottom: 32px;
+}
+
+.rg-title {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: #f1f5f9;
+    margin: 0 0 6px;
+}
+
+.rg-sub {
+    color: #64748b;
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+/* ── Seções ───────────────────────────────────── */
+.rg-section {
+    margin-bottom: 32px;
+}
+
+.rg-section-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    margin: 0 0 16px;
+}
+
+.rg-text {
+    color: #cbd5e1;
+    font-size: 0.92rem;
+    line-height: 1.7;
+    background: #111827;
+    border: 1px solid #1e293b;
+    border-radius: 12px;
+    padding: 16px 20px;
+}
+
+/* ── Grid de cards ────────────────────────────── */
+.rg-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+    margin-bottom: 32px;
+}
+
+/* ── Card individual ──────────────────────────── */
+.rg-card {
+    background: #0f172a;
+    border: 1px solid #1e293b;
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.rg-card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 20px;
+    border-bottom: 1px solid #1e293b;
+}
+
+.rg-placar    { background: linear-gradient(135deg, #052e16, #0f172a); }
+.rg-artilheiro { background: linear-gradient(135deg, #1e1b4b, #0f172a); }
+.rg-paredao   { background: linear-gradient(135deg, #1a2e1a, #0f172a); }
+.rg-tecnico   { background: linear-gradient(135deg, #2d1b00, #0f172a); }
+
+.rg-icon { font-size: 1.4rem; }
+
+.rg-card-header h3 {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #f1f5f9;
+    margin: 0;
+}
+
+.rg-card-body {
+    padding: 16px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* ── Linha de pontuação ───────────────────────── */
+.rg-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 0.875rem;
+}
+
+.rg-positive { background: rgba(16, 185, 129, .08); }
+.rg-negative { background: rgba(239, 68, 68, .08); }
+.rg-destaque { background: rgba(239, 68, 68, .16); }
+
+.rg-pts {
+    font-size: 0.95rem;
+    font-weight: 800;
+    min-width: 40px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.rg-positive .rg-pts { color: #34d399; }
+.rg-negative .rg-pts { color: #f87171; }
+
+.rg-desc { color: #cbd5e1; line-height: 1.4; }
+
+.rg-note {
+    font-size: 0.78rem;
+    color: #475569;
+    border-top: 1px solid #1e293b;
+    padding-top: 10px;
+    margin-top: 4px;
+    line-height: 1.5;
+}
+
+/* ── Resumo rápido ────────────────────────────── */
+.rg-resumo-section { }
+
+.rg-resumo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 12px;
+}
+
+.rg-resumo-item {
+    background: #111827;
+    border: 1px solid #1e293b;
+    border-radius: 12px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    text-align: center;
+}
+
+.rg-resumo-pts {
+    font-size: 1.5rem;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.rg-resumo-pts.positive { color: #34d399; }
+.rg-resumo-pts.negative { color: #f87171; }
+
+.rg-resumo-label {
+    font-size: 0.75rem;
+    color: #64748b;
+    line-height: 1.3;
+}
+
+/* ── Timeline janela de palpites ──────────────── */
+.rg-timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    background: #111827;
+    border: 1px solid #1e293b;
+    border-radius: 12px;
+    padding: 8px 20px;
+}
+
+.rg-tl-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 16px 0;
+    border-bottom: 1px solid #1e293b;
+    font-size: 0.9rem;
+    color: #cbd5e1;
+    line-height: 1.6;
+}
+
+.rg-tl-item:last-child { border-bottom: none; }
+
+.rg-tl-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-top: 6px;
+    flex-shrink: 0;
+}
+
+.dot-green  { background: #34d399; box-shadow: 0 0 8px #34d39966; }
+.dot-red    { background: #f87171; box-shadow: 0 0 8px #f8717166; }
+.dot-yellow { background: #fbbf24; box-shadow: 0 0 8px #fbbf2466; }
+
+.rg-tl-item strong { color: #f1f5f9; }
+
+/* ── Responsivo ───────────────────────────────── */
+@media (max-width: 560px) {
+    .rg-grid { grid-template-columns: 1fr; }
+    .rg-resumo-grid { grid-template-columns: repeat(3, 1fr); }
+}

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" th:href="@{/css/regras.css}">
+</head>
+
+<body th:replace="~{layout :: template(titulo='Regras', conteudo=~{regras :: content})}">
+
+<div th:fragment="content" class="rg-wrapper">
+
+    <div class="rg-header">
+        <h1 class="rg-title">Regras do Bolão</h1>
+        <p class="rg-sub">Como funciona a pontuação de cada palpite.</p>
+    </div>
+
+    <!-- COMO FUNCIONA -->
+    <div class="rg-section">
+        <h2 class="rg-section-title">Como funciona</h2>
+        <p class="rg-text">
+            Para cada jogo da rodada você faz um palpite com: <strong>placar</strong>,
+            <strong>artilheiro</strong>, <strong>goleiro (paredão)</strong> e <strong>técnico</strong>.
+            Os pontos são calculados automaticamente após o apito final.
+        </p>
+    </div>
+
+    <!-- CARDS DE PONTUAÇÃO -->
+    <div class="rg-grid">
+
+        <!-- PLACAR -->
+        <div class="rg-card">
+            <div class="rg-card-header rg-placar">
+                <span class="rg-icon">⚽</span>
+                <h3>Placar</h3>
+            </div>
+            <div class="rg-card-body">
+                <div class="rg-row rg-positive">
+                    <span class="rg-pts">+10</span>
+                    <span class="rg-desc">Placar exato (ex: 2 × 1 acertado)</span>
+                </div>
+                <div class="rg-row rg-positive">
+                    <span class="rg-pts">+5</span>
+                    <span class="rg-desc">Acertou vencedor ou empate</span>
+                </div>
+                <div class="rg-note">
+                    Os dois bônus se acumulam: cravar o placar já inclui acertar o resultado (+15 total).
+                </div>
+            </div>
+        </div>
+
+        <!-- ARTILHEIRO -->
+        <div class="rg-card">
+            <div class="rg-card-header rg-artilheiro">
+                <span class="rg-icon">🎯</span>
+                <h3>Artilheiro</h3>
+            </div>
+            <div class="rg-card-body">
+                <div class="rg-row rg-positive">
+                    <span class="rg-pts">+10</span>
+                    <span class="rg-desc">Por cada gol marcado</span>
+                </div>
+                <div class="rg-row rg-positive">
+                    <span class="rg-pts">+5</span>
+                    <span class="rg-desc">Por cada assistência</span>
+                </div>
+                <div class="rg-row rg-negative">
+                    <span class="rg-pts">−10</span>
+                    <span class="rg-desc">Por pênalti perdido</span>
+                </div>
+                <div class="rg-row rg-negative">
+                    <span class="rg-pts">−10</span>
+                    <span class="rg-desc">Cartão vermelho</span>
+                </div>
+                <div class="rg-note">
+                    Se o jogador escalado não entrar em campo, pontuação é zero.
+                </div>
+            </div>
+        </div>
+
+        <!-- PAREDÃO -->
+        <div class="rg-card">
+            <div class="rg-card-header rg-paredao">
+                <span class="rg-icon">🧤</span>
+                <h3>Paredão</h3>
+            </div>
+            <div class="rg-card-body">
+                <div class="rg-row rg-positive">
+                    <span class="rg-pts">+10</span>
+                    <span class="rg-desc">Sem levar gol (jogo zerado)</span>
+                </div>
+                <div class="rg-row rg-positive">
+                    <span class="rg-pts">+10</span>
+                    <span class="rg-desc">Por pênalti defendido</span>
+                </div>
+                <div class="rg-row rg-negative">
+                    <span class="rg-pts">−10</span>
+                    <span class="rg-desc">Cartão vermelho</span>
+                </div>
+                <div class="rg-row rg-negative rg-destaque">
+                    <span class="rg-pts">−30</span>
+                    <span class="rg-desc">Não escalar o paredão</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- TÉCNICO -->
+        <div class="rg-card">
+            <div class="rg-card-header rg-tecnico">
+                <span class="rg-icon">🎽</span>
+                <h3>Técnico</h3>
+            </div>
+            <div class="rg-card-body">
+                <div class="rg-row rg-positive">
+                    <span class="rg-pts">+10</span>
+                    <span class="rg-desc">Time do técnico vence a partida</span>
+                </div>
+                <div class="rg-row rg-negative">
+                    <span class="rg-pts">−10</span>
+                    <span class="rg-desc">Cartão vermelho</span>
+                </div>
+                <div class="rg-note">
+                    Empate ou derrota: pontuação zero (sem bônus nem penalidade).
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- RESUMO RÁPIDO -->
+    <div class="rg-section rg-resumo-section">
+        <h2 class="rg-section-title">Resumo de pontuação</h2>
+        <div class="rg-resumo-grid">
+            <div class="rg-resumo-item">
+                <span class="rg-resumo-pts positive">+15</span>
+                <span class="rg-resumo-label">Placar exato</span>
+            </div>
+            <div class="rg-resumo-item">
+                <span class="rg-resumo-pts positive">+5</span>
+                <span class="rg-resumo-label">Resultado certo</span>
+            </div>
+            <div class="rg-resumo-item">
+                <span class="rg-resumo-pts positive">+10</span>
+                <span class="rg-resumo-label">Gol do artilheiro</span>
+            </div>
+            <div class="rg-resumo-item">
+                <span class="rg-resumo-pts positive">+10</span>
+                <span class="rg-resumo-label">Paredão zerou</span>
+            </div>
+            <div class="rg-resumo-item">
+                <span class="rg-resumo-pts positive">+10</span>
+                <span class="rg-resumo-label">Técnico venceu</span>
+            </div>
+            <div class="rg-resumo-item">
+                <span class="rg-resumo-pts negative">−30</span>
+                <span class="rg-resumo-label">Sem paredão</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- JANELA DE PALPITES -->
+    <div class="rg-section">
+        <h2 class="rg-section-title">Janela de palpites</h2>
+        <div class="rg-timeline">
+            <div class="rg-tl-item">
+                <div class="rg-tl-dot dot-green"></div>
+                <div>
+                    <strong>Abre</strong> quando o último jogo da rodada anterior for finalizado.
+                </div>
+            </div>
+            <div class="rg-tl-item">
+                <div class="rg-tl-dot dot-red"></div>
+                <div>
+                    <strong>Fecha</strong> 20 minutos antes do primeiro jogo da rodada começar.
+                </div>
+            </div>
+            <div class="rg-tl-item">
+                <div class="rg-tl-dot dot-yellow"></div>
+                <div>
+                    Você pode <strong>editar</strong> seu palpite quantas vezes quiser enquanto a janela estiver aberta.
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

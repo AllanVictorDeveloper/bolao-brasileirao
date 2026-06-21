@@ -1,81 +1,109 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <link rel="stylesheet" th:href="@{/css/classificacao.css}">
 </head>
 
-<body th:replace="~{layout :: template(titulo=${titulo}, conteudo=~{classificacao :: content})}">
+<body th:replace="~{layout :: template(titulo='Classificação', conteudo=~{classificacao :: content})}">
 
-<div th:fragment="content" class="classificacao-wrapper">
+<div th:fragment="content" class="cl-wrapper">
 
-    <div class="title-box">
-        <h1>Classificação Geral</h1>
-        <p class="sub">Veja a tabela atualizada dos participantes.</p>
+    <div class="cl-header">
+        <div>
+            <h1 class="cl-title">Classificação Geral</h1>
+            <p class="cl-sub">Ranking atualizado com base nos palpites pontuados.</p>
+        </div>
     </div>
 
-    <div class="ranking-wrapper">
-        <div class="table-scroll">
-            <table class="ge-table">
+    <!-- VAZIO -->
+    <div class="cl-empty" th:if="${#lists.isEmpty(ranking)}">
+        <i class="bi bi-trophy"></i>
+        <p>Nenhum palpite pontuado ainda. A classificação será exibida após a primeira rodada.</p>
+    </div>
+
+    <!-- RANKING -->
+    <div class="cl-card" th:if="${not #lists.isEmpty(ranking)}">
+
+        <!-- TOP 3 pódio -->
+        <div class="cl-podio" th:if="${#lists.size(ranking) >= 1}">
+            <!-- 2º lugar -->
+            <div class="cl-podio-item podio-silver" th:if="${#lists.size(ranking) >= 2}">
+                <div class="cl-podio-medal">🥈</div>
+                <div class="cl-podio-avatar"
+                     th:text="${#strings.toUpperCase(#strings.substring(ranking[1].usuario().nome, 0, 1) + #strings.substring(ranking[1].usuario().sobrenome, 0, 1))}">
+                </div>
+                <div class="cl-podio-nome" th:text="${ranking[1].usuario().nome}"></div>
+                <div class="cl-podio-pts" th:text="${ranking[1].pontos} + ' pts'"></div>
+            </div>
+
+            <!-- 1º lugar -->
+            <div class="cl-podio-item podio-gold">
+                <div class="cl-podio-medal">🥇</div>
+                <div class="cl-podio-avatar avatar-gold"
+                     th:text="${#strings.toUpperCase(#strings.substring(ranking[0].usuario().nome, 0, 1) + #strings.substring(ranking[0].usuario().sobrenome, 0, 1))}">
+                </div>
+                <div class="cl-podio-nome" th:text="${ranking[0].usuario().nome}"></div>
+                <div class="cl-podio-pts" th:text="${ranking[0].pontos} + ' pts'"></div>
+            </div>
+
+            <!-- 3º lugar -->
+            <div class="cl-podio-item podio-bronze" th:if="${#lists.size(ranking) >= 3}">
+                <div class="cl-podio-medal">🥉</div>
+                <div class="cl-podio-avatar avatar-bronze"
+                     th:text="${#strings.toUpperCase(#strings.substring(ranking[2].usuario().nome, 0, 1) + #strings.substring(ranking[2].usuario().sobrenome, 0, 1))}">
+                </div>
+                <div class="cl-podio-nome" th:text="${ranking[2].usuario().nome}"></div>
+                <div class="cl-podio-pts" th:text="${ranking[2].pontos} + ' pts'"></div>
+            </div>
+        </div>
+
+        <!-- TABELA COMPLETA -->
+        <div class="cl-table-wrap">
+            <table class="cl-table">
                 <thead>
-                <tr>
-                    <th>Classificação</th>
-                    <th>Participante</th>
-                    <th>Pontos</th>
-                </tr>
+                    <tr>
+                        <th class="col-pos">#</th>
+                        <th>Participante</th>
+                        <th class="col-num">Palpites</th>
+                        <th class="col-num">Cravadas</th>
+                        <th class="col-pts">Pontos</th>
+                    </tr>
                 </thead>
-
                 <tbody>
+                    <tr th:each="entry, iter : ${ranking}"
+                        th:classappend="${iter.index == 0} ? 'row-gold' : (${iter.index == 1} ? 'row-silver' : (${iter.index == 2} ? 'row-bronze' : ''))">
 
-                <!-- MOCKADOS -->
-                <tr class="gold">
-                    <td>1</td>
-                    <td>Allan Victor</td>
-                    <td>87</td>
-                </tr>
+                        <!-- Posição -->
+                        <td class="col-pos">
+                            <span th:if="${iter.index == 0}" class="pos-medal">🥇</span>
+                            <span th:if="${iter.index == 1}" class="pos-medal">🥈</span>
+                            <span th:if="${iter.index == 2}" class="pos-medal">🥉</span>
+                            <span th:if="${iter.index > 2}"  class="pos-num" th:text="${iter.index + 1}"></span>
+                        </td>
 
-                <tr class="silver">
-                    <td>2</td>
-                    <td>Bruno Costa</td>
-                    <td>81</td>
-                </tr>
+                        <!-- Nome + avatar -->
+                        <td>
+                            <div class="cl-user">
+                                <div class="cl-avatar"
+                                     th:classappend="${iter.index == 0} ? 'cl-avatar-gold' : (${iter.index == 1} ? 'cl-avatar-silver' : (${iter.index == 2} ? 'cl-avatar-bronze' : ''))"
+                                     th:text="${#strings.toUpperCase(#strings.substring(entry.usuario().nome, 0, 1) + #strings.substring(entry.usuario().sobrenome, 0, 1))}">
+                                </div>
+                                <span class="cl-nome" th:text="${entry.usuario().nome + ' ' + entry.usuario().sobrenome}"></span>
+                            </div>
+                        </td>
 
-                <tr class="bronze">
-                    <td>3</td>
-                    <td>Fernanda Lima</td>
-                    <td>79</td>
-                </tr>
+                        <!-- Palpites feitos -->
+                        <td class="col-num cl-num" th:text="${entry.palpitesFeitos()}"></td>
 
-                <tr>
-                    <td>4</td>
-                    <td>Rafael Torres</td>
-                    <td>73</td>
-                </tr>
+                        <!-- Placares exatos -->
+                        <td class="col-num cl-num" th:text="${entry.placaresExatos()}"></td>
 
-                <tr>
-                    <td>5</td>
-                    <td>Camila Duarte</td>
-                    <td>69</td>
-                </tr>
-
-                <tr>
-                    <td>6</td>
-                    <td>Tiago Andrade</td>
-                    <td>63</td>
-                </tr>
-
-                <tr>
-                    <td>7</td>
-                    <td>Letícia Prado</td>
-                    <td>52</td>
-                </tr>
-
-
-                <!--        <tr th:each="usuario, iter : ${usuarios}">-->
-                <!--            <td class="pos" th:text="${iter.index + 1}">1</td>-->
-                <!--            <td class="nome" th:text="${usuario.nome}">Nome</td>-->
-                <!--            <td class="pts" th:text="${usuario.totalPontos}">80</td>-->
-                <!--        </tr>-->
-
+                        <!-- Pontos -->
+                        <td class="col-pts">
+                            <span class="cl-pts" th:text="${entry.pontos()}"></span>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
         </div>
@@ -86,4 +114,3 @@
 
 </body>
 </html>
-

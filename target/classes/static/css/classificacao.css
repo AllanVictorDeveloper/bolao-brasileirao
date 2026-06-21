@@ -1,156 +1,202 @@
-/* ----------------------------- */
-/*   TÍTULO                      */
-/* ----------------------------- */
-
-.classificacao-wrapper {
-    color: #fff;
-    margin-top: 40px;
-    padding-top: 10px;
-    padding-bottom: 20px;
+/* ── Wrapper ──────────────────────────────────── */
+.cl-wrapper {
     width: 100%;
-    /*margin-left: auto;*/
-    /*margin-right: auto;*/
-    transition: margin .3s ease;
+    padding-bottom: 48px;
+    color: #f1f5f9;
 }
 
-.title-box {
-    margin-top: 40px;
-    margin-bottom: 20px;
+/* ── Cabeçalho ────────────────────────────────── */
+.cl-header {
+    margin-bottom: 32px;
 }
 
-.title-box h1 {
-    font-size: 32px;
-    font-weight: 700;
-    color: #0A0F24;
-    margin-bottom: 6px;
+.cl-title {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: #f1f5f9;
+    margin: 0 0 6px;
 }
 
-.sub {
-    color: #10182f;
-    font-size: 17px;
+.cl-sub {
+    color: #64748b;
+    font-size: 0.9rem;
+    margin: 0;
 }
 
-/* ----------------------------- */
-/*   WRAPPER DA TABELA           */
-/* ----------------------------- */
-.ranking-wrapper {
-    background: #0F1528;
-    padding: 35px;
-    /*border-radius: 20px;*/
-    border: 1px solid rgba(255,255,255,0.06);
-    box-shadow: 0 15px 40px rgba(0,0,0,0.5);
-
-    max-height: 580px;
-    display: flex;
-    flex-direction: column;
-}
-
-/* Área rolável */
-.table-scroll {
-    overflow-y: auto;
-    overflow-x: hidden;
-    flex: 1;                     /* ocupa todo o espaço abaixo do título */
-    padding-right: 6px;          /* espaço para scrollbar */
-}
-
-/* Oculta barra feia no Firefox */
-.table-scroll {
-    scrollbar-width: thin;
-    scrollbar-color: #0EA15F #10182f;
-}
-
-/* Scrollbar estilizado Chrome */
-.table-scroll::-webkit-scrollbar {
-    width: 8px;
-}
-.table-scroll::-webkit-scrollbar-track {
-    background: #10182f;
-}
-.table-scroll::-webkit-scrollbar-thumb {
-    background: #0EA15F;
-    border-radius: 6px;
-}
-
-/* ----------------------------- */
-/*   TABELA      */
-/* ----------------------------- */
-.ge-table {
-    margin-bottom: 8px;
-    display: table;
-    width: 100%;
-    table-layout: fixed;
-}
-
-.ge-table thead th {
-    padding: 12px 15px;
-    text-align: left;
-    color: #9aa7c2;
-    /*color: #FFD84A;*/
-    font-size: 15px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-
-    position: sticky;
-    top: 0;
-    background: #121b36;
-    z-index: 10;
-}
-
-/* Linha base */
-.ge-table tbody tr {
-    background: #121b36;
-    transition: .2s ease;
-    /*border-radius: 12px;*/
+/* ── Card container ───────────────────────────── */
+.cl-card {
+    background: #0f172a;
+    border: 1px solid #1e293b;
+    border-radius: 20px;
     overflow: hidden;
 }
 
-/* Células */
-.ge-table td {
-    padding: 18px;
-    color: #edf2f7;
-    font-weight: 500;
+/* ── Pódio top 3 ──────────────────────────────── */
+.cl-podio {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 16px;
+    padding: 36px 24px 28px;
+    background: linear-gradient(180deg, #111827 0%, #0f172a 100%);
+    border-bottom: 1px solid #1e293b;
 }
 
-/* Hover suave */
-.ge-table tbody tr:hover {
-    background: #1a2445;
-    transform: translateX(4px);
-    box-shadow: 0 6px 16px rgba(0,0,0,0.4);
+.cl-podio-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+    max-width: 140px;
 }
 
-/* ----------------------------- */
-/*   BARRA LATERAL COLORIDA      */
-/* ----------------------------- */
-.ge-table tbody tr td:first-child {
-    border-left: 6px solid transparent;
+.podio-gold   { order: 2; }
+.podio-silver { order: 1; }
+.podio-bronze { order: 3; }
+
+.cl-podio-medal { font-size: 1.8rem; line-height: 1; }
+
+.podio-gold   .cl-podio-medal { font-size: 2.2rem; }
+
+.cl-podio-avatar {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: #1e293b;
+    color: #94a3b8;
+    font-size: 0.95rem;
     font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #334155;
 }
 
-/* TOP 3 – cores mais suaves, modernas */
-.gold td:first-child {
-    border-left-color: #FFD93D;
-}
-.silver td:first-child {
-    border-left-color: #C0C0C0;
-}
-.bronze td:first-child {
-    border-left-color: #CD7F32;
-}
+.podio-gold   .cl-podio-avatar { width: 68px; height: 68px; background: #3b2f00; color: #fbbf24; border-color: #fbbf24; font-size: 1.1rem; }
+.podio-silver .cl-podio-avatar { background: #1e2433; color: #cbd5e1; border-color: #94a3b8; }
+.podio-bronze .cl-podio-avatar { background: #2a1a0e; color: #d97706; border-color: #b45309; }
 
-/* TOP 3 – fundo premium */
-.gold {
-    background: linear-gradient(to right, rgba(255,217,61,0.20), #121b36);
-}
-.silver {
-    background: linear-gradient(to right, rgba(192,192,192,0.18), #121b36);
-}
-.bronze {
-    background: linear-gradient(to right, rgba(205,127,50,0.18), #121b36);
-}
-
-/* Deixa o texto dos top 3 mais destacado */
-.gold td,
-.silver td,
-.bronze td {
+.cl-podio-nome {
+    font-size: 0.82rem;
     font-weight: 600;
+    color: #e2e8f0;
+    text-align: center;
+}
+
+.cl-podio-pts {
+    font-size: 0.9rem;
+    font-weight: 800;
+    color: #10b981;
+}
+
+/* ── Tabela ───────────────────────────────────── */
+.cl-table-wrap {
+    overflow-x: auto;
+}
+
+.cl-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+.cl-table thead tr {
+    background: #0a101f;
+}
+
+.cl-table th {
+    padding: 12px 20px;
+    text-align: left;
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: #475569;
+}
+
+.cl-table td {
+    padding: 16px 20px;
+    border-top: 1px solid #1e293b;
+    vertical-align: middle;
+}
+
+.cl-table tbody tr:hover { background: rgba(255,255,255,.02); }
+
+/* top 3 highlights */
+.row-gold   { background: linear-gradient(90deg, rgba(251,191,36,.08) 0%, transparent 60%); }
+.row-silver { background: linear-gradient(90deg, rgba(148,163,184,.06) 0%, transparent 60%); }
+.row-bronze { background: linear-gradient(90deg, rgba(180,83,9,.07) 0%, transparent 60%); }
+
+/* colunas */
+.col-pos { width: 56px; text-align: center; }
+.col-num { width: 100px; text-align: center; }
+.col-pts { width: 100px; text-align: right; }
+
+.pos-medal { font-size: 1.3rem; line-height: 1; }
+.pos-num   { font-size: 0.95rem; font-weight: 700; color: #64748b; }
+
+/* célula usuário */
+.cl-user {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.cl-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #1e293b;
+    color: #94a3b8;
+    font-size: 0.75rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border: 1px solid #334155;
+}
+
+.cl-avatar-gold   { background: #3b2f00; color: #fbbf24; border-color: #fbbf24; }
+.cl-avatar-silver { background: #1e2433; color: #cbd5e1; border-color: #94a3b8; }
+.cl-avatar-bronze { background: #2a1a0e; color: #d97706; border-color: #b45309; }
+
+.cl-nome {
+    font-weight: 600;
+    color: #f1f5f9;
+}
+
+.cl-num {
+    color: #64748b;
+    font-weight: 500;
+    text-align: center;
+}
+
+.cl-pts {
+    font-size: 1rem;
+    font-weight: 800;
+    color: #10b981;
+}
+
+/* ── Vazio ─────────────────────────────────────── */
+.cl-empty {
+    text-align: center;
+    padding: 64px 24px;
+    color: #475569;
+}
+
+.cl-empty i {
+    font-size: 3rem;
+    display: block;
+    margin-bottom: 12px;
+}
+
+.cl-empty p { font-size: 0.9rem; }
+
+/* ── Responsivo ───────────────────────────────── */
+@media (max-width: 560px) {
+    .cl-podio { padding: 24px 12px 20px; gap: 10px; }
+    .cl-table th, .cl-table td { padding: 12px; }
+    .col-num { display: none; }
 }

@@ -1,0 +1,15 @@
+package com.bolao.brasileirao.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+
+@Controller
+public class RegrasController {
+
+    @GetMapping("/regras")
+    public String regras(Model model) {
+        model.addAttribute("pagina", "regras");
+        return "regras";
+    }
+}
