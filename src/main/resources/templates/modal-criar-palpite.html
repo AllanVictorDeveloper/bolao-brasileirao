@@ -10,7 +10,7 @@
             <button class="mc-close" type="button" onclick="fecharModal()">&#x2715;</button>
         </div>
 
-        <form method="post" th:action="@{/palpite/salvar}">
+        <form method="post" th:action="@{/palpite/salvar}" id="formPalpite" onsubmit="return validarPalpite()">
             <input type="hidden" name="jogoId" th:value="${jogo.id}">
             <input type="hidden" name="rodada" th:value="${jogo.rodada}">
 
@@ -23,9 +23,7 @@
                            name="placarMandante" placeholder="0" required
                            th:value="${palpite != null ? palpite.golsCasaPalpite : ''}">
                 </div>
-
                 <span class="mc-vs">×</span>
-
                 <div class="mc-time">
                     <img class="mc-escudo" th:src="${jogo.visitanteEscudo}" alt="visitante">
                     <span class="mc-sigla" th:text="${jogo.visitanteSigla}"></span>
@@ -38,12 +36,15 @@
             <!-- ESCOLHAS -->
             <div class="mc-fields">
 
+                <!-- ARTILHEIRO 1 -->
                 <div class="mc-field">
                     <label class="mc-label">
-                        <span class="mc-icon">&#9917;</span> Artilheiro
+                        <span class="mc-icon">&#9917;</span> Artilheiro 1
+                        <span class="mc-label-hint">obrigatório</span>
                     </label>
-                    <select name="artilheiroId" class="mc-select" required>
-                        <option value="" disabled th:selected="${palpite == null}">Selecione o artilheiro</option>
+                    <select id="selArtilheiro" name="artilheiroId" class="mc-select" required
+                            onchange="limparErros()">
+                        <option value="" disabled th:selected="${palpite == null}">Selecione o 1º artilheiro</option>
                         <optgroup th:label="${jogo.mandante}" th:if="${not #lists.isEmpty(artilheirosMandante)}">
                             <option th:each="a : ${artilheirosMandante}"
                                     th:value="${a.atletaId}"
@@ -59,13 +60,44 @@
                             </option>
                         </optgroup>
                     </select>
+                    <span class="mc-select-erro" id="erroArtilheiro"></span>
                 </div>
 
+                <!-- ARTILHEIRO 2 -->
+                <div class="mc-field">
+                    <label class="mc-label">
+                        <span class="mc-icon">&#9917;</span> Artilheiro 2
+                        <span class="mc-label-hint mc-label-optional">opcional</span>
+                    </label>
+                    <select id="selArtilheiro2" name="artilheiro2Id" class="mc-select"
+                            onchange="limparErros()">
+                        <option value="">Selecione o 2º artilheiro (opcional)</option>
+                        <optgroup th:label="${jogo.mandante}" th:if="${not #lists.isEmpty(artilheirosMandante)}">
+                            <option th:each="a : ${artilheirosMandante}"
+                                    th:value="${a.atletaId}"
+                                    th:text="${a.nome}"
+                                    th:selected="${palpite != null and palpite.artilheiro2Id == a.atletaId}">
+                            </option>
+                        </optgroup>
+                        <optgroup th:label="${jogo.visitante}" th:if="${not #lists.isEmpty(artilheirosVisitante)}">
+                            <option th:each="a : ${artilheirosVisitante}"
+                                    th:value="${a.atletaId}"
+                                    th:text="${a.nome}"
+                                    th:selected="${palpite != null and palpite.artilheiro2Id == a.atletaId}">
+                            </option>
+                        </optgroup>
+                    </select>
+                    <span class="mc-select-erro" id="erroArtilheiro2"></span>
+                </div>
+
+                <!-- PAREDÃO -->
                 <div class="mc-field">
                     <label class="mc-label">
                         <span class="mc-icon">🧤</span> Paredão
+                        <span class="mc-label-hint">obrigatório · −30 pts se não escalar</span>
                     </label>
-                    <select name="paredaoId" class="mc-select" required>
+                    <select id="selParedao" name="paredaoId" class="mc-select" required
+                            onchange="limparErros()">
                         <option value="" disabled th:selected="${palpite == null}">Selecione o goleiro</option>
                         <optgroup th:label="${jogo.mandante}" th:if="${not #lists.isEmpty(goleirosMandante)}">
                             <option th:each="g : ${goleirosMandante}"
@@ -82,13 +114,17 @@
                             </option>
                         </optgroup>
                     </select>
+                    <span class="mc-select-erro" id="erroParedao"></span>
                 </div>
 
+                <!-- TÉCNICO -->
                 <div class="mc-field">
                     <label class="mc-label">
                         <span class="mc-icon">🎽</span> Técnico
+                        <span class="mc-label-hint">obrigatório</span>
                     </label>
-                    <select name="tecnicoId" class="mc-select" required>
+                    <select id="selTecnico" name="tecnicoId" class="mc-select" required
+                            onchange="limparErros()">
                         <option value="" disabled th:selected="${palpite == null}">Selecione o técnico</option>
                         <optgroup th:label="${jogo.mandante}" th:if="${not #lists.isEmpty(tecnicosMandante)}">
                             <option th:each="t : ${tecnicosMandante}"
@@ -105,6 +141,7 @@
                             </option>
                         </optgroup>
                     </select>
+                    <span class="mc-select-erro" id="erroTecnico"></span>
                 </div>
 
             </div>
@@ -120,4 +157,57 @@
 
         </form>
     </div>
+
+    <script>
+        function validarPalpite() {
+            const art1   = document.getElementById('selArtilheiro').value;
+            const art2   = document.getElementById('selArtilheiro2').value;
+            const paredao = document.getElementById('selParedao').value;
+            const tecnico = document.getElementById('selTecnico').value;
+
+            let valido = true;
+
+            if (art2 && art1 === art2) {
+                setErro('erroArtilheiro',  'Artilheiro 1 e 2 não podem ser o mesmo jogador.');
+                setErro('erroArtilheiro2', 'Artilheiro 1 e 2 não podem ser o mesmo jogador.');
+                valido = false;
+            }
+            if (art1 && tecnico && art1 === tecnico) {
+                setErro('erroArtilheiro', 'Artilheiro 1 já foi escolhido como técnico.');
+                setErro('erroTecnico',    'Técnico já foi escolhido como artilheiro 1.');
+                valido = false;
+            }
+            if (art2 && tecnico && art2 === tecnico) {
+                setErro('erroArtilheiro2', 'Artilheiro 2 já foi escolhido como técnico.');
+                setErro('erroTecnico',     'Técnico já foi escolhido como artilheiro 2.');
+                valido = false;
+            }
+
+            return valido;
+        }
+
+        function setErro(id, msg) {
+            const el = document.getElementById(id);
+            if (el) el.textContent = msg;
+            const mapa = {
+                erroArtilheiro: 'selArtilheiro',
+                erroArtilheiro2: 'selArtilheiro2',
+                erroParedao: 'selParedao',
+                erroTecnico: 'selTecnico'
+            };
+            const sel = document.getElementById(mapa[id]);
+            if (sel) sel.classList.add('mc-select-invalido');
+        }
+
+        function limparErros() {
+            ['erroArtilheiro','erroArtilheiro2','erroParedao','erroTecnico'].forEach(id => {
+                const e = document.getElementById(id);
+                if (e) e.textContent = '';
+            });
+            ['selArtilheiro','selArtilheiro2','selParedao','selTecnico'].forEach(id => {
+                const s = document.getElementById(id);
+                if (s) s.classList.remove('mc-select-invalido');
+            });
+        }
+    </script>
 </div>

@@ -25,7 +25,9 @@ public class EstatisticasServiceImpl implements IEstatisticasService {
 
     @Override
     public EstatisticaJogadorRodada buscarPorJogadorERodada(Long jogadorId, Integer rodada) {
-        return estatisticasRepo.findByJogadorIdAndRodada(jogadorId, rodada).orElse(null);
+        // Técnicos têm atletaId negativo no Jogador (ex: -123), mas EstatisticaJogadorRodada
+        // armazena o tecnico_id positivo vindo da API. Math.abs normaliza ambos os casos.
+        return estatisticasRepo.findByJogadorIdAndRodada(Math.abs(jogadorId), rodada).orElse(null);
     }
 
     /**

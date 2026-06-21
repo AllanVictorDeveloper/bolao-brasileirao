@@ -41,8 +41,13 @@
         <div class="mc-fields">
 
             <div class="mc-ver-row">
-                <span class="mc-label"><span class="mc-icon">&#9917;</span> Artilheiro</span>
+                <span class="mc-label"><span class="mc-icon">&#9917;</span> Artilheiro 1</span>
                 <span class="mc-ver-val" th:text="${nomeArtilheiro}">-</span>
+            </div>
+
+            <div class="mc-ver-row" th:if="${palpite.artilheiro2Id != null}">
+                <span class="mc-label"><span class="mc-icon">&#9917;</span> Artilheiro 2</span>
+                <span class="mc-ver-val" th:text="${nomeArtilheiro2}">-</span>
             </div>
 
             <div class="mc-ver-row">

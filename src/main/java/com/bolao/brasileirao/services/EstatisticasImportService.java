@@ -28,17 +28,33 @@ public class EstatisticasImportService {
     private final ApiFutebolService apiFutebolService;
     private final EstatisticaJogadorRodadaRepository estatisticasRepo;
     private final JogoRepository jogoRepository;
+    private final PalpiteService palpiteService;
 
     @Transactional
-    public void importarEstatisticasPendentes() {
+    public int importarEstatisticasPendentes() {
         List<Jogo> pendentes = jogoRepository.findByStatusAndStatsImportadasFalse(StatusJogo.FINALIZADO);
+
+        Set<Integer> rodadasAfetadas = new java.util.HashSet<>();
+
         for (Jogo jogo : pendentes) {
             try {
                 importarEstatisticasDaPartida(jogo);
+                rodadasAfetadas.add(jogo.getRodada());
             } catch (Exception e) {
                 System.out.println("❌ Erro ao importar stats da partida " + jogo.getPartidaId() + ": " + e.getMessage());
             }
         }
+
+        for (Integer rodada : rodadasAfetadas) {
+            try {
+                palpiteService.recalcularPontuacaoRodada(rodada);
+                System.out.println("✅ Pontuação recalculada para rodada " + rodada);
+            } catch (Exception e) {
+                System.out.println("❌ Erro ao recalcular pontuação rodada " + rodada + ": " + e.getMessage());
+            }
+        }
+
+        return rodadasAfetadas.size();
     }
 
     @Transactional

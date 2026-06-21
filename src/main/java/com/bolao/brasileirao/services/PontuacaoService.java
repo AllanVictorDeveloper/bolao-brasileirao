@@ -28,9 +28,12 @@ public class PontuacaoService  {
             pontos += 5;
         }
 
-        // 3) Artilheiro
+        // 3) Artilheiro(s) — até 2
         if (palpite.getArtilheiroId() != null) {
             pontos += calcularArtilheiro(palpite.getArtilheiroId(), rodada);
+        }
+        if (palpite.getArtilheiro2Id() != null) {
+            pontos += calcularArtilheiro(palpite.getArtilheiro2Id(), rodada);
         }
 
         // 4) Paredão

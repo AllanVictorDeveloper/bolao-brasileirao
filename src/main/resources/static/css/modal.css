@@ -163,6 +163,26 @@
 }
 .mc-select:focus { border-color: #10b981; }
 .mc-select option { background: #1e293b; }
+.mc-select-invalido { border-color: #ef4444 !important; }
+
+.mc-label-hint {
+    font-size: 0.68rem;
+    font-weight: 400;
+    color: #475569;
+    text-transform: none;
+    letter-spacing: 0;
+    margin-left: 4px;
+}
+
+.mc-label-optional { color: #10b981; }
+
+.mc-select-erro {
+    font-size: 0.75rem;
+    color: #f87171;
+    min-height: 16px;
+    display: block;
+    margin-top: 2px;
+}
 
 /* actions */
 .mc-actions {

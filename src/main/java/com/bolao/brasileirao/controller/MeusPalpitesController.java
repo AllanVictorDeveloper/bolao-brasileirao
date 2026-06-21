@@ -107,9 +107,10 @@ public class MeusPalpitesController {
 
         model.addAttribute("jogo", jogo);
         model.addAttribute("palpite", palpite);
-        model.addAttribute("nomeArtilheiro", jogadorService.buscarNomePorAtletaId(palpite.getArtilheiroId()));
-        model.addAttribute("nomeParedao",    jogadorService.buscarNomePorAtletaId(palpite.getParedaoId()));
-        model.addAttribute("nomeTecnico",    jogadorService.buscarNomePorAtletaId(palpite.getTecnicoId()));
+        model.addAttribute("nomeArtilheiro",  jogadorService.buscarNomePorAtletaId(palpite.getArtilheiroId()));
+        model.addAttribute("nomeArtilheiro2", jogadorService.buscarNomePorAtletaId(palpite.getArtilheiro2Id()));
+        model.addAttribute("nomeParedao",     jogadorService.buscarNomePorAtletaId(palpite.getParedaoId()));
+        model.addAttribute("nomeTecnico",     jogadorService.buscarNomePorAtletaId(palpite.getTecnicoId()));
 
         return "modal-ver-palpite :: modalVerPalpite";
     }

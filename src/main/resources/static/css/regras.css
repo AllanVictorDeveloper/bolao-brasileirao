@@ -128,6 +128,23 @@
     line-height: 1.5;
 }
 
+.rg-tag-destaque {
+    display: inline-block;
+    background: rgba(16, 185, 129, .12);
+    color: #34d399;
+    border: 1px solid rgba(16, 185, 129, .25);
+    border-radius: 6px;
+    padding: 4px 10px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.rg-desc-hint {
+    color: #475569;
+    font-size: 0.82em;
+}
+
 /* ── Resumo rápido ────────────────────────────── */
 .rg-resumo-section { }
 

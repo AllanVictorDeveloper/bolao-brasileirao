@@ -25,6 +25,7 @@ public class Palpite extends BaseEntity {
 
     // IDs do jogador na API (artilheiro, goleiro, técnico)
     private Long artilheiroId;
+    private Long artilheiro2Id;
     private Long paredaoId;
     private Long tecnicoId;
 

@@ -15,6 +15,8 @@ public class PalpiteRequest {
 
     private Long artilheiroId;
 
+    private Long artilheiro2Id;
+
     private Long paredaoId;
 
     private Long tecnicoId;

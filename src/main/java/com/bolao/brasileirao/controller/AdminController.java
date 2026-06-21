@@ -1,6 +1,7 @@
 package com.bolao.brasileirao.controller;
 
 import com.bolao.brasileirao.services.EstatisticasImportService;
+import com.bolao.brasileirao.services.PalpiteService;
 import com.bolao.brasileirao.services.RodadaService;
 import com.bolao.brasileirao.services.interfaces.IJogadorService;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,7 @@ public class AdminController {
     private final RodadaService rodadaService;
     private final EstatisticasImportService estatisticasImportService;
     private final IJogadorService jogadorService;
+    private final PalpiteService palpiteService;
 
     @GetMapping
     public String adminPage(Model model) {
@@ -57,11 +59,7 @@ public class AdminController {
             }
         }
 
-        return Map.of(
-            "status", "ok",
-            "sincronizadas", sincronizadas,
-            "erros", erros
-        );
+        return Map.of("status", "ok", "sincronizadas", sincronizadas, "erros", erros);
     }
 
     @GetMapping("/sincronizar-jogadores")
@@ -77,10 +75,26 @@ public class AdminController {
 
     @GetMapping("/importar-stats")
     @ResponseBody
-    public Map<String, String> importarStats() {
+    public Map<String, Object> importarStats() {
         try {
-            estatisticasImportService.importarEstatisticasPendentes();
-            return Map.of("status", "ok");
+            int rodadasRecalculadas = estatisticasImportService.importarEstatisticasPendentes();
+            return Map.of("status", "ok", "rodadasRecalculadas", rodadasRecalculadas);
+        } catch (Exception e) {
+            return Map.of("status", "erro", "mensagem", e.getMessage());
+        }
+    }
+
+    @GetMapping("/recalcular-pontuacao")
+    @ResponseBody
+    public Map<String, Object> recalcularPontuacao(@RequestParam(required = false) Integer rodada) {
+        try {
+            if (rodada != null) {
+                palpiteService.recalcularPontuacaoRodada(rodada);
+                return Map.of("status", "ok", "rodada", rodada);
+            }
+            // sem parâmetro: recalcula todas as rodadas que têm palpites
+            int total = palpiteService.recalcularTodasRodadas();
+            return Map.of("status", "ok", "rodadasRecalculadas", total);
         } catch (Exception e) {
             return Map.of("status", "erro", "mensagem", e.getMessage());
         }
