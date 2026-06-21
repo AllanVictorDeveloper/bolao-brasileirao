@@ -1,0 +1,319 @@
+/* ── Cabeçalho ──────────────────────────────────── */
+.au-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+/* ── Alertas ────────────────────────────────────── */
+.au-alert {
+    padding: 12px 16px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.au-alert-ok   { background: #064e3b; color: #6ee7b7; border: 1px solid #065f46; }
+.au-alert-erro { background: #450a0a; color: #fca5a5; border: 1px solid #7f1d1d; }
+
+/* ── Stats ──────────────────────────────────────── */
+.au-stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+@media (max-width: 600px) {
+    .au-stats-row { grid-template-columns: repeat(2, 1fr); }
+}
+
+.au-stat-card {
+    background: #111827;
+    border: 1px solid #1f2937;
+    border-radius: 14px;
+    padding: 16px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.au-stat-num {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: #f1f5f9;
+    line-height: 1;
+}
+
+.au-stat-label {
+    font-size: 0.75rem;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+}
+
+.stat-ativo  { color: #34d399; }
+.stat-inativo { color: #94a3b8; }
+.stat-admin  { color: #93c5fd; }
+
+/* ── Tabela ─────────────────────────────────────── */
+.au-card {
+    background: #111827;
+    border-radius: 16px;
+    border: 1px solid #1f2937;
+    overflow: hidden;
+}
+
+.au-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+}
+
+.au-table thead tr { background: #0f172a; }
+
+.au-table th {
+    padding: 12px 16px;
+    text-align: left;
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: #475569;
+}
+
+.au-table td {
+    padding: 14px 16px;
+    border-bottom: 1px solid #1e293b;
+    color: #cbd5e1;
+    vertical-align: middle;
+}
+
+.au-table tbody tr:last-child td { border-bottom: none; }
+.au-table tbody tr:hover { background: rgba(255,255,255,.015); }
+
+/* ── Célula de usuário (avatar + nome + email) ── */
+.au-user-cell {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.au-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: #1e3a5f;
+    color: #93c5fd;
+    font-size: 0.78rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    letter-spacing: .03em;
+}
+
+.au-avatar.avatar-admin {
+    background: #3b1f6b;
+    color: #c4b5fd;
+}
+
+.au-nome  { font-weight: 600; color: #f1f5f9; font-size: 0.9rem; }
+.au-email { color: #64748b; font-size: 0.8rem; margin-top: 2px; }
+.au-login { color: #475569; font-size: 0.82rem; }
+.au-empty {
+    text-align: center;
+    color: #475569;
+    padding: 48px 16px;
+    font-size: 0.9rem;
+}
+
+/* ── Badges ─────────────────────────────────────── */
+.au-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 0.73rem;
+    font-weight: 600;
+    letter-spacing: .03em;
+}
+
+.badge-admin { background: #1e1b4b; color: #a5b4fc; }
+.badge-part  { background: #052e16; color: #86efac; }
+
+/* ── Status com dot ─────────────────────────────── */
+.au-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.au-status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.status-ativo  .au-status-dot { background: #34d399; box-shadow: 0 0 6px #34d39966; }
+.status-inativo .au-status-dot { background: #64748b; }
+.status-ativo  { color: #34d399; }
+.status-inativo { color: #64748b; }
+
+/* ── Botão toggle ───────────────────────────────── */
+.au-actions { text-align: right; }
+
+.btn-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border-radius: 8px;
+    border: none;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity .15s, transform .1s;
+    white-space: nowrap;
+}
+
+.btn-toggle:hover  { opacity: .8; }
+.btn-toggle:active { transform: scale(.97); }
+
+.btn-desativar { background: #1c0a0a; color: #f87171; border: 1px solid #7f1d1d; }
+.btn-ativar    { background: #052e16; color: #6ee7b7; border: 1px solid #065f46; }
+
+/* ── Modal ──────────────────────────────────────── */
+.au-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.72);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 999999;
+    padding: 16px;
+}
+
+.au-modal {
+    background: #0f172a;
+    border: 1px solid #1e293b;
+    border-radius: 20px;
+    width: 100%;
+    max-width: 480px;
+    animation: fadeIn .2s ease;
+    overflow: hidden;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-12px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.au-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 24px 16px;
+    border-bottom: 1px solid #1e293b;
+}
+
+.au-modal-title {
+    display: block;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #f1f5f9;
+}
+
+.au-modal-sub {
+    display: block;
+    font-size: 0.78rem;
+    color: #64748b;
+    margin-top: 2px;
+}
+
+/* reutiliza .mc-close do modal.css */
+
+/* ── Formulário dentro do modal ─────────────────── */
+.au-modal-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 20px 24px 24px;
+}
+
+.au-form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+}
+
+@media (max-width: 480px) {
+    .au-form-row { grid-template-columns: 1fr; }
+}
+
+.au-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.au-form-group label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+}
+
+.au-input {
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 10px;
+    color: #f1f5f9;
+    padding: 10px 12px;
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color .2s;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.au-input:focus  { border-color: #10b981; }
+.au-input option { background: #1e293b; }
+.au-input::placeholder { color: #475569; }
+
+.au-modal-actions {
+    display: flex;
+    gap: 10px;
+    padding-top: 4px;
+}
+
+/* ── Página de formulário standalone (/novo) ──── */
+.au-form-card {
+    background: #111827;
+    border: 1px solid #1e293b;
+    border-radius: 16px;
+    padding: 28px;
+    max-width: 560px;
+}
+
+.au-form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.au-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding-top: 4px;
+}

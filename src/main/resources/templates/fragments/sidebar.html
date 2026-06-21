@@ -50,6 +50,14 @@
                     <span>Admin</span>
                 </a>
             </li>
+            <li sec:authorize="hasRole('ADMINISTRADOR')">
+                <a th:href="@{/admin/usuarios}"
+                   th:classappend="${pagina == 'admin-usuarios'} ? 'active' : ''"
+                   data-title="Usuários">
+                    <i class="bi bi-people-fill"></i>
+                    <span>Usuários</span>
+                </a>
+            </li>
         </ul>
 
         <!-- BOTÃO DE LOGOUT FIXADO -->

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" th:href="@{/css/admin.css}">
+    <link rel="stylesheet" th:href="@{/css/admin-usuarios.css}">
+</head>
+
+<body th:replace="~{layout :: template(titulo='Novo Usuário', conteudo=~{admin-usuario-form :: content})}">
+
+<div th:fragment="content" class="admin-wrapper">
+
+    <div class="au-header">
+        <div>
+            <h1>Novo Usuário</h1>
+            <p class="sub">Preencha os dados para cadastrar um participante.</p>
+        </div>
+        <a th:href="@{/admin/usuarios}" class="btn-admin btn-outline">
+            <i class="bi bi-arrow-left"></i>
+            Voltar
+        </a>
+    </div>
+
+    <div class="au-alert au-alert-erro" th:if="${erro}" th:text="${erro}"></div>
+
+    <div class="au-form-card">
+        <form th:action="@{/admin/usuarios/novo}" method="post" class="au-form">
+
+            <div class="au-form-row">
+                <div class="au-form-group">
+                    <label>Nome</label>
+                    <input type="text" name="nome" class="au-input" required placeholder="Ex: João">
+                </div>
+                <div class="au-form-group">
+                    <label>Sobrenome</label>
+                    <input type="text" name="sobrenome" class="au-input" required placeholder="Ex: Silva">
+                </div>
+            </div>
+
+            <div class="au-form-group">
+                <label>E-mail</label>
+                <input type="email" name="email" class="au-input" required placeholder="joao@email.com">
+            </div>
+
+            <div class="au-form-row">
+                <div class="au-form-group">
+                    <label>Senha</label>
+                    <input type="password" name="senhaRaw" class="au-input"
+                           required minlength="6" placeholder="Mínimo 6 caracteres">
+                </div>
+                <div class="au-form-group">
+                    <label>Perfil</label>
+                    <select name="perfil" class="au-input" required>
+                        <option th:each="p : ${perfis}"
+                                th:value="${p.name()}"
+                                th:text="${p.name() == 'ADMINISTRADOR' ? 'Administrador' : 'Participante'}">
+                        </option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="au-form-actions">
+                <a th:href="@{/admin/usuarios}" class="btn-admin btn-outline">Cancelar</a>
+                <button type="submit" class="btn-admin btn-primary">
+                    <i class="bi bi-person-check-fill"></i>
+                    Cadastrar Usuário
+                </button>
+            </div>
+
+        </form>
+    </div>
+
+</div>
+
+</body>
+</html>

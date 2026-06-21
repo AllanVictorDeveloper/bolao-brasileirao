@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" th:href="@{/css/admin.css}">
+    <link rel="stylesheet" th:href="@{/css/admin-usuarios.css}">
+</head>
+
+<body th:replace="~{layout :: template(titulo='Gerenciar Usuários', conteudo=~{admin-usuarios :: content})}">
+
+<div th:fragment="content" class="admin-wrapper">
+
+    <!-- CABEÇALHO -->
+    <div class="au-header">
+        <div>
+            <h1>Gerenciar Usuários</h1>
+            <p class="sub">Visualize, ative/desative e cadastre participantes do bolão.</p>
+        </div>
+        <button class="btn-admin btn-primary" onclick="abrirModalUsuario()">
+            <i class="bi bi-person-plus-fill"></i>
+            Novo Usuário
+        </button>
+    </div>
+
+    <!-- ALERTAS -->
+    <div class="au-alert au-alert-ok"   th:if="${sucesso}" th:text="${sucesso}"></div>
+    <div class="au-alert au-alert-erro" th:if="${erro}"    th:text="${erro}"></div>
+
+    <!-- STATS -->
+    <div class="au-stats-row">
+        <div class="au-stat-card">
+            <span class="au-stat-num" th:text="${#lists.size(usuarios)}">0</span>
+            <span class="au-stat-label">Total</span>
+        </div>
+        <div class="au-stat-card">
+            <span class="au-stat-num stat-ativo"
+                  th:text="${#lists.size(usuarios.?[ativo == true])}">0</span>
+            <span class="au-stat-label">Ativos</span>
+        </div>
+        <div class="au-stat-card">
+            <span class="au-stat-num stat-inativo"
+                  th:text="${#lists.size(usuarios.?[ativo == false])}">0</span>
+            <span class="au-stat-label">Inativos</span>
+        </div>
+        <div class="au-stat-card">
+            <span class="au-stat-num stat-admin"
+                  th:text="${#lists.size(usuarios.?[perfil?.name() == 'ADMINISTRADOR'])}">0</span>
+            <span class="au-stat-label">Admins</span>
+        </div>
+    </div>
+
+    <!-- TABELA -->
+    <div class="au-card">
+        <table class="au-table">
+            <thead>
+                <tr>
+                    <th>Usuário</th>
+                    <th>Perfil</th>
+                    <th>Status</th>
+                    <th>Último login</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="u : ${usuarios}">
+
+                    <!-- Avatar + nome + email -->
+                    <td>
+                        <div class="au-user-cell">
+                            <div class="au-avatar"
+                                 th:classappend="${u.perfil?.name() == 'ADMINISTRADOR'} ? 'avatar-admin' : ''"
+                                 th:text="${#strings.toUpperCase(#strings.substring(u.nome, 0, 1) + #strings.substring(u.sobrenome, 0, 1))}">
+                            </div>
+                            <div>
+                                <div class="au-nome" th:text="${u.nome + ' ' + u.sobrenome}"></div>
+                                <div class="au-email" th:text="${u.email}"></div>
+                            </div>
+                        </div>
+                    </td>
+
+                    <!-- Perfil -->
+                    <td>
+                        <span class="au-badge"
+                              th:classappend="${u.perfil?.name() == 'ADMINISTRADOR'} ? 'badge-admin' : 'badge-part'"
+                              th:text="${u.perfil?.name() == 'ADMINISTRADOR'} ? 'Admin' : 'Participante'">
+                        </span>
+                    </td>
+
+                    <!-- Status -->
+                    <td>
+                        <span class="au-status"
+                              th:classappend="${u.ativo} ? 'status-ativo' : 'status-inativo'">
+                            <span class="au-status-dot"></span>
+                            <span th:text="${u.ativo} ? 'Ativo' : 'Inativo'"></span>
+                        </span>
+                    </td>
+
+                    <!-- Último login -->
+                    <td class="au-login"
+                        th:text="${u.ultimoLogin != null ? #temporals.format(u.ultimoLogin, 'dd/MM/yyyy HH:mm') : '—'}">
+                    </td>
+
+                    <!-- Ações -->
+                    <td class="au-actions">
+                        <form th:action="@{/admin/usuarios/{id}/toggle-ativo(id=${u.id})}"
+                              method="post"
+                              th:onsubmit="${u.ativo} ? 'return confirm(\'Desativar este usuário?\')' : 'return confirm(\'Ativar este usuário?\')'">
+                            <button type="submit"
+                                    class="btn-toggle"
+                                    th:classappend="${u.ativo} ? 'btn-desativar' : 'btn-ativar'">
+                                <i class="bi" th:classappend="${u.ativo} ? 'bi-person-slash' : 'bi-person-check'"></i>
+                                <span th:text="${u.ativo} ? 'Desativar' : 'Ativar'"></span>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+
+                <tr th:if="${#lists.isEmpty(usuarios)}">
+                    <td colspan="5" class="au-empty">
+                        <i class="bi bi-people" style="font-size:2rem;display:block;margin-bottom:8px;"></i>
+                        Nenhum usuário cadastrado.
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- MODAL NOVO USUÁRIO -->
+    <div class="au-modal-overlay" id="modalUsuario">
+        <div class="au-modal">
+
+            <div class="au-modal-header">
+                <div>
+                    <span class="au-modal-title">Novo Usuário</span>
+                    <span class="au-modal-sub">Preencha os dados do participante</span>
+                </div>
+                <button class="mc-close" type="button" onclick="fecharModalUsuario()">&#x2715;</button>
+            </div>
+
+            <form th:action="@{/admin/usuarios/novo}" method="post" class="au-modal-form">
+
+                <div class="au-form-row">
+                    <div class="au-form-group">
+                        <label>Nome</label>
+                        <input type="text" name="nome" class="au-input" required placeholder="João">
+                    </div>
+                    <div class="au-form-group">
+                        <label>Sobrenome</label>
+                        <input type="text" name="sobrenome" class="au-input" required placeholder="Silva">
+                    </div>
+                </div>
+
+                <div class="au-form-group">
+                    <label>E-mail</label>
+                    <input type="email" name="email" class="au-input" required placeholder="joao@email.com">
+                </div>
+
+                <div class="au-form-row">
+                    <div class="au-form-group">
+                        <label>Senha</label>
+                        <input type="password" name="senhaRaw" class="au-input"
+                               required minlength="6" placeholder="Mínimo 6 caracteres">
+                    </div>
+                    <div class="au-form-group">
+                        <label>Perfil</label>
+                        <select name="perfil" class="au-input" required>
+                            <option value="PARTICIPANTE">Participante</option>
+                            <option value="ADMINISTRADOR">Administrador</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="au-modal-actions">
+                    <button type="button" class="mc-btn-cancel" onclick="fecharModalUsuario()">Cancelar</button>
+                    <button type="submit" class="mc-btn-save">
+                        <i class="bi bi-person-check-fill"></i>
+                        Cadastrar
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function abrirModalUsuario() {
+            const m = document.getElementById('modalUsuario');
+            m.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function fecharModalUsuario() {
+            const m = document.getElementById('modalUsuario');
+            m.style.display = 'none';
+            document.body.style.overflow = '';
+        }
+
+        document.getElementById('modalUsuario').addEventListener('click', function(e) {
+            if (e.target === this) fecharModalUsuario();
+        });
+
+        // Reabre o modal se houver erro de validação (email duplicado)
+        const temErro = /*[[${erro != null}]]*/ false;
+        if (temErro) abrirModalUsuario();
+    </script>
+
+</div>
+
+</body>
+</html>

@@ -10,12 +10,14 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
 
     private final UsuarioService usuarioService;
+    private final AuthenticationSuccessHandler loginSuccessHandler;
 
     @Value("${api.security.token.secret}")
     private String secret;
@@ -36,8 +38,8 @@ public class SecurityConfig {
 
                 .formLogin(login -> login
                         .loginPage("/login")
-                        .loginProcessingUrl("/login")  // ← POST automático do Spring Security
-                        .defaultSuccessUrl("/home", true)
+                        .loginProcessingUrl("/login")
+                        .successHandler(loginSuccessHandler)
                         .failureUrl("/login?error=true")
                         .permitAll()
                 )
