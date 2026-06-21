@@ -46,10 +46,15 @@ public class RodadaService {
         return jogoRepository.findByRodadaOrderByDataJogoAsc(obterRodadaAtual());
     }
 
-    /** Rodada atual segundo o banco de dados (fallback quando a API não responde). */
+    /** Rodada atual: a rodada do próximo jogo a partir de hoje. Fallback: última rodada. */
     public Integer obterRodadaAtual() {
-        Integer rodada = jogoRepository.findRodadaMaisAtual();
-        return rodada != null ? rodada : 1;
+        return jogoRepository
+                .findFirstByDataJogoGreaterThanEqualOrderByDataJogoAsc(LocalDateTime.now())
+                .map(Jogo::getRodada)
+                .orElseGet(() -> {
+                    Integer max = jogoRepository.findRodadaMaxima();
+                    return max != null ? max : 1;
+                });
     }
 
     /**
@@ -67,10 +72,11 @@ public class RodadaService {
             System.out.println("⚠ Falha ao buscar rodada atual da API: " + e.getMessage());
         }
         return obterRodadaAtual();
+
     }
 
     public Integer obterProximaRodada() {
-        Integer rodada = jogoRepository.findRodadaMaisAtual();
+        Integer rodada = jogoRepository.findRodadaMaxima();
         if (rodada == null) return 1;
         int proxima = rodada + 1;
         return proxima > RODADA_MAXIMA ? RODADA_MAXIMA : proxima;

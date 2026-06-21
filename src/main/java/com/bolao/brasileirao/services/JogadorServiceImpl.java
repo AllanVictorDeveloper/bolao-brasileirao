@@ -31,14 +31,18 @@ public class JogadorServiceImpl implements IJogadorService {
      */
     @Override
     public void sincronizarPorPartida(Long partidaId, Long mandanteId, Long visitanteId) {
+        boolean mandanteJaSincronizado  = jogadorRepository.existsByTimeId(mandanteId);
+        boolean visitanteJaSincronizado = jogadorRepository.existsByTimeId(visitanteId);
+        if (mandanteJaSincronizado && visitanteJaSincronizado) return;
+
         PartidaDetalheResponse detalhe = apiFutebolService.buscarDetalhesPartida(partidaId);
 
         if (detalhe == null || detalhe.getEscalacoes() == null) return;
 
-        if (detalhe.getEscalacoes().getMandante() != null) {
+        if (!mandanteJaSincronizado && detalhe.getEscalacoes().getMandante() != null) {
             sincronizarEscalacao(detalhe.getEscalacoes().getMandante(), mandanteId);
         }
-        if (detalhe.getEscalacoes().getVisitante() != null) {
+        if (!visitanteJaSincronizado && detalhe.getEscalacoes().getVisitante() != null) {
             sincronizarEscalacao(detalhe.getEscalacoes().getVisitante(), visitanteId);
         }
     }

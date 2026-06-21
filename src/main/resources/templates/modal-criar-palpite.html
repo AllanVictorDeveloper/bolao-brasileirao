@@ -1,105 +1,123 @@
 <div class="modal-overlay" id="modalPalpite" th:fragment="modalPalpite">
-    <div class="modal-content">
+    <div class="modal-card">
 
-        <h2 th:text="'Palpite da Rodada ' + ${jogo.rodada} + 'ª'"></h2>
-        <p th:text="${jogo.mandanteSigla} + ' x ' + ${jogo.visitanteSigla}"></p>
+        <!-- HEADER -->
+        <div class="mc-header">
+            <div class="mc-meta">
+                <span class="mc-rodada" th:text="${jogo.rodada} + 'ª Rodada'"></span>
+                <span class="mc-data" th:text="${#temporals.format(jogo.dataJogo, 'EEE, dd/MM • HH:mm')}"></span>
+            </div>
+            <button class="mc-close" type="button" onclick="fecharModal()">&#x2715;</button>
+        </div>
 
         <form method="post" th:action="@{/palpite/salvar}">
             <input type="hidden" name="jogoId" th:value="${jogo.id}">
             <input type="hidden" name="rodada" th:value="${jogo.rodada}">
 
             <!-- PLACAR -->
-            <div class="placar-inputs">
-                <div>
-                    <label>Mandante:</label>
-                    <input type="number" min="0" name="placarMandante" required
+            <div class="mc-placar-section">
+                <div class="mc-time">
+                    <img class="mc-escudo" th:src="${jogo.mandanteEscudo}" alt="mandante">
+                    <span class="mc-sigla" th:text="${jogo.mandanteSigla}"></span>
+                    <input class="mc-gol-input" type="number" min="0" max="99"
+                           name="placarMandante" placeholder="0" required
                            th:value="${palpite != null ? palpite.golsCasaPalpite : ''}">
                 </div>
 
-                <div class="x">×</div>
+                <span class="mc-vs">×</span>
 
-                <div>
-                    <label>Visitante:</label>
-                    <input type="number" min="0" name="placarVisitante" required
+                <div class="mc-time">
+                    <img class="mc-escudo" th:src="${jogo.visitanteEscudo}" alt="visitante">
+                    <span class="mc-sigla" th:text="${jogo.visitanteSigla}"></span>
+                    <input class="mc-gol-input" type="number" min="0" max="99"
+                           name="placarVisitante" placeholder="0" required
                            th:value="${palpite != null ? palpite.golsForaPalpite : ''}">
                 </div>
             </div>
 
-            <!-- ARTILHEIRO -->
-            <div class="form-group">
-                <label>Artilheiro:</label>
-                <select name="artilheiroId" required>
-                    <option value="" disabled th:selected="${palpite == null}">Selecione</option>
-                    <optgroup th:label="${jogo.mandante}" th:if="${not #lists.isEmpty(artilheirosMandante)}">
-                        <option th:each="a : ${artilheirosMandante}"
-                                th:value="${a.atletaId}"
-                                th:text="${a.nome}"
-                                th:selected="${palpite != null and palpite.artilheiroId == a.atletaId}">
-                        </option>
-                    </optgroup>
-                    <optgroup th:label="${jogo.visitante}" th:if="${not #lists.isEmpty(artilheirosVisitante)}">
-                        <option th:each="a : ${artilheirosVisitante}"
-                                th:value="${a.atletaId}"
-                                th:text="${a.nome}"
-                                th:selected="${palpite != null and palpite.artilheiroId == a.atletaId}">
-                        </option>
-                    </optgroup>
-                </select>
+            <!-- ESCOLHAS -->
+            <div class="mc-fields">
+
+                <div class="mc-field">
+                    <label class="mc-label">
+                        <span class="mc-icon">&#9917;</span> Artilheiro
+                    </label>
+                    <select name="artilheiroId" class="mc-select" required>
+                        <option value="" disabled th:selected="${palpite == null}">Selecione o artilheiro</option>
+                        <optgroup th:label="${jogo.mandante}" th:if="${not #lists.isEmpty(artilheirosMandante)}">
+                            <option th:each="a : ${artilheirosMandante}"
+                                    th:value="${a.atletaId}"
+                                    th:text="${a.nome}"
+                                    th:selected="${palpite != null and palpite.artilheiroId == a.atletaId}">
+                            </option>
+                        </optgroup>
+                        <optgroup th:label="${jogo.visitante}" th:if="${not #lists.isEmpty(artilheirosVisitante)}">
+                            <option th:each="a : ${artilheirosVisitante}"
+                                    th:value="${a.atletaId}"
+                                    th:text="${a.nome}"
+                                    th:selected="${palpite != null and palpite.artilheiroId == a.atletaId}">
+                            </option>
+                        </optgroup>
+                    </select>
+                </div>
+
+                <div class="mc-field">
+                    <label class="mc-label">
+                        <span class="mc-icon">🧤</span> Paredão
+                    </label>
+                    <select name="paredaoId" class="mc-select" required>
+                        <option value="" disabled th:selected="${palpite == null}">Selecione o goleiro</option>
+                        <optgroup th:label="${jogo.mandante}" th:if="${not #lists.isEmpty(goleirosMandante)}">
+                            <option th:each="g : ${goleirosMandante}"
+                                    th:value="${g.atletaId}"
+                                    th:text="${g.nome}"
+                                    th:selected="${palpite != null and palpite.paredaoId == g.atletaId}">
+                            </option>
+                        </optgroup>
+                        <optgroup th:label="${jogo.visitante}" th:if="${not #lists.isEmpty(goleirosVisitante)}">
+                            <option th:each="g : ${goleirosVisitante}"
+                                    th:value="${g.atletaId}"
+                                    th:text="${g.nome}"
+                                    th:selected="${palpite != null and palpite.paredaoId == g.atletaId}">
+                            </option>
+                        </optgroup>
+                    </select>
+                </div>
+
+                <div class="mc-field">
+                    <label class="mc-label">
+                        <span class="mc-icon">🎽</span> Técnico
+                    </label>
+                    <select name="tecnicoId" class="mc-select" required>
+                        <option value="" disabled th:selected="${palpite == null}">Selecione o técnico</option>
+                        <optgroup th:label="${jogo.mandante}" th:if="${not #lists.isEmpty(tecnicosMandante)}">
+                            <option th:each="t : ${tecnicosMandante}"
+                                    th:value="${t.atletaId}"
+                                    th:text="${t.nome}"
+                                    th:selected="${palpite != null and palpite.tecnicoId == t.atletaId}">
+                            </option>
+                        </optgroup>
+                        <optgroup th:label="${jogo.visitante}" th:if="${not #lists.isEmpty(tecnicosVisitante)}">
+                            <option th:each="t : ${tecnicosVisitante}"
+                                    th:value="${t.atletaId}"
+                                    th:text="${t.nome}"
+                                    th:selected="${palpite != null and palpite.tecnicoId == t.atletaId}">
+                            </option>
+                        </optgroup>
+                    </select>
+                </div>
+
             </div>
 
-            <!-- PAREDÃO -->
-            <div class="form-group">
-                <label>Paredão (Goleiro):</label>
-                <select name="paredaoId" required>
-                    <option value="" disabled th:selected="${palpite == null}">Selecione</option>
-                    <optgroup th:label="${jogo.mandante}" th:if="${not #lists.isEmpty(goleirosMandante)}">
-                        <option th:each="g : ${goleirosMandante}"
-                                th:value="${g.atletaId}"
-                                th:text="${g.nome}"
-                                th:selected="${palpite != null and palpite.paredaoId == g.atletaId}">
-                        </option>
-                    </optgroup>
-                    <optgroup th:label="${jogo.visitante}" th:if="${not #lists.isEmpty(goleirosVisitante)}">
-                        <option th:each="g : ${goleirosVisitante}"
-                                th:value="${g.atletaId}"
-                                th:text="${g.nome}"
-                                th:selected="${palpite != null and palpite.paredaoId == g.atletaId}">
-                        </option>
-                    </optgroup>
-                </select>
-            </div>
-
-            <!-- TÉCNICO -->
-            <div class="form-group">
-                <label>Técnico:</label>
-                <select name="tecnicoId" required>
-                    <option value="" disabled th:selected="${palpite == null}">Selecione</option>
-                    <optgroup th:label="${jogo.mandante}" th:if="${not #lists.isEmpty(tecnicosMandante)}">
-                        <option th:each="t : ${tecnicosMandante}"
-                                th:value="${t.atletaId}"
-                                th:text="${t.nome}"
-                                th:selected="${palpite != null and palpite.tecnicoId == t.atletaId}">
-                        </option>
-                    </optgroup>
-                    <optgroup th:label="${jogo.visitante}" th:if="${not #lists.isEmpty(tecnicosVisitante)}">
-                        <option th:each="t : ${tecnicosVisitante}"
-                                th:value="${t.atletaId}"
-                                th:text="${t.nome}"
-                                th:selected="${palpite != null and palpite.tecnicoId == t.atletaId}">
-                        </option>
-                    </optgroup>
-                </select>
-            </div>
-
-            <div class="modal-actions">
-                <button type="button" onclick="fecharModal()">Cancelar</button>
-                <button type="submit" class="salvar"
+            <!-- ACTIONS -->
+            <div class="mc-actions">
+                <button class="mc-btn-cancel" type="button" onclick="fecharModal()">Cancelar</button>
+                <button class="mc-btn-save" type="submit"
                         th:text="${palpite != null ? 'Salvar Alterações' : 'Salvar Palpite'}">
                     Salvar Palpite
                 </button>
             </div>
 
         </form>
-
     </div>
 </div>

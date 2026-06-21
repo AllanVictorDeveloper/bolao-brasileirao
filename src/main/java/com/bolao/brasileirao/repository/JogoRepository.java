@@ -13,7 +13,9 @@ public interface JogoRepository extends JpaRepository<Jogo, Long> {
     List<Jogo> findByRodadaOrderByDataJogoAsc(Integer rodada);
 
     @Query("SELECT MAX(j.rodada) FROM Jogo j")
-    Integer findRodadaMaisAtual();
+    Integer findRodadaMaxima();
+
+    Optional<Jogo> findFirstByDataJogoGreaterThanEqualOrderByDataJogoAsc(java.time.LocalDateTime dataJogo);
 
     boolean existsByRodada(Integer rodada);
 
